@@ -10,27 +10,44 @@
    <title> Songs of God </title>
 
    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+   <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
+   <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+
+   <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+   <link href="../static/css/SongsOfGod.css" rel="stylesheet" type="text/css">
+
 </head>
 <body>
-    <div id="all_selected_songs_placeholder">    </div>
+  <div class="container">
+    <div class="row top-buffer">
+      <div class="col-md-1"></div>
+    </div>
 
-    <button onclick="add_song_fct()" id="btn_add_song"> Add song! </button>
+    <div class="row">
+      <div class="col-md-1"></div>
+      <div class="col-md-10">
 
-    <button type="submit" id="btn_get_lyrics"> Get Lyrics! </button>
-    <br>
-    <br>
-    <div id="show_lyrics" style="background-color: white; white-space: pre"> Hier kommt der Liedtext hin </div>
+      <div id="all_selected_songs_placeholder"></div>
 
-<br>
+      <button onclick="add_song_fct()" id="btn_add_song" class="btn btn-info"> Add song! </button>
 
-    <div id="show_pdf_placeholder">    </div>
+      <button type="submit" id="btn_get_lyrics" class="btn btn-primary"> Get Lyrics! </button>
+      <br>
+      <br>
+      <div id="show_lyrics" style="background-color: white; white-space: pre; width: 50%"> Hier kommt der Liedtext hin </div>
 
+      <br>
+    </div>
+
+    <div id="show_pdf_placeholder"></div>
+
+  </div>
 </body>
 
 <script>
-
     make_song_selector = function(){
-        var select_song = $('<select />').addClass("class_selected_songs");
+        var select_song = $('<select />').addClass("class_selected_songs").css("width", "35%");;
         var songlist = {{ songlist|safe }};
         songlist.forEach(function(element){
             var option = $('<option />').text(element[1]).val(element[0]).attr('tonart', element[2]);
@@ -39,8 +56,10 @@
         
         select_song.onchange=function(){make_mode_selector()};
 
-        var select_mode = $('<select />');
+
+        var select_mode = $('<select />').css("width", "8%");
         select_mode.empty();
+
         //list_mode = ["1","2","3"];
         //list_mode.forEach(function(element){
         //    var option = $('<option />').text(element).val(element);
@@ -50,6 +69,9 @@
         var div = $('<div />').addClass("placeholder_selectgroup");
         div.append(select_song);
         div.append(select_mode);
+
+        $(select_song).select2();
+        $(select_mode).select2();
 
 /*
         <select id="selected_song">
@@ -84,7 +106,9 @@
     };
 
 
-    $("#all_selected_songs_placeholder").append(make_song_selector()).append($('<br>'));
+    $("#all_selected_songs_placeholder").
+      append(make_song_selector()).
+      append($('<br>'));
 
     function add_song_fct() {
         $("#all_selected_songs_placeholder").append(make_song_selector());
@@ -108,12 +132,9 @@
           error: function(obj, st, err){
             alert(err);
           }
-        });  
+        });
     });
 
-    
-
-    
 
 </script>
 </html>
