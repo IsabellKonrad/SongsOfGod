@@ -101,18 +101,30 @@
     }
 
     $("#btn_get_lyrics").click(function(){
-        var selected_song = $("#selected_song").val();
-        var selected_mode = $("#selected_mode").val();
-        var data = {"song": selected_song, "mode": selected_mode};
+        var selected_songs = [];
+        $.each($(".class_selected_songs"), function(){
+             selected_songs.push($(this).select2().find(":selected").val());
+          });
+
+        var selected_modes = [];
+        $.each($(".class_selected_modes"), function(){
+             selected_modes.push($(this).select2().find(":selected").val());
+          });
+
+        var data = {"songs": selected_songs, "modes": selected_modes};
+
         $.ajax({
           contentType: 'application/json',
           type: 'POST',
           url: 'getsong',
           data: JSON.stringify(data),
           success: function(d){
-            $("#show_lyrics").html(d.lyrics);
-            $("#show_pdf").remove();
-            $("#show_pdf_placeholder").append(d.path);
+            // todo: show new pdf, see below
+            console.log(d);
+
+            // $("#show_lyrics").html(d.lyrics);
+            // $("#show_pdf").remove();
+            // $("#show_pdf_placeholder").append(d.path);
           },
           error: function(obj, st, err){
             alert(err);

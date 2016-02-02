@@ -88,6 +88,10 @@ def create_pdf(song, mode):
 @app.route('/getsong', methods=['GET', 'POST'])
 def getsong(song="hereiam"):
     content = request.get_json(silent=True)
+    songs_and_modes = zip(content["songs"], content["modes"])
+    # todo: create corresponding pdf, see below
+    return jsonify({"todo": songs_and_modes})
+
     song = content["song"]
     mode = content["mode"]
     lyrics = get_lyrics(song, mode)
