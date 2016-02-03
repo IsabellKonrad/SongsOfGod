@@ -46,77 +46,77 @@
 </body>
 
 <script>
-
-    function make_mode_selector(){
-        console.log("abc");
-        var tonart = $('option:selected', this).attr('tonart');
-        console.log(tonart);
+    make_song_selector = function(){
+        var div = $('<div />').addClass("placeholder_selectgroup");
+        var select_song = $('<select />').addClass("class_selected_songs").css("width", "35%");;
+        div.append(select_song);
+        $(select_song).select2({
+          placeholder: "Song"
+        });
+        var songlist = {{ songlist|safe }};
+        songlist.forEach(function(element){
+            var option = $('<option />').text(element[1]).val(element[0]).attr('data-tonart', element[2]);
+            select_song.append(option);
+        });
+        var select_mode = $('<select />').css("width", "8%").addClass("class_selected_modes");
+        div.append(select_mode);
+        $(select_mode).select2({
+          placeholder: "Tonart",
+          minimumResultsForSearch: Infinity
+        });
+        return div;
+    };
+    make_mode_selector = function(that){
+        var tonart = $(that).select2().find(":selected").data("tonart");
         if (tonart == 'Dur') {
             var available_modes = ["As", "Es", "B", "F", "C", "G", "D", "A", "E"];
         } else {
             var available_modes = ["f", "c", "g", "d", "a", "e", "h", "fis", "cis"];
         }
-        console.log(this.nextElementSibling)
-        var selected_mode = $(this.nextElementSibling);
-        selected_mode.empty();
+        var selected_mode = $(that).parent().children(".class_selected_modes");
+        selected_mode.empty().trigger("change");
         available_modes.forEach(function(element){
             var option = $('<option />').text(element).val(element);
             selected_mode.append(option);
         });
     };
-
-    function make_song_selector() {
-        var select_song = $('<select />').css("width", "35%");
-        select_song.addEventListener("change", function () {make_mode_selector()}, false);
-        //select_song.onchange=function(){console.log("abc");};
-        var songlist = {{ songlist|safe }};
-        songlist.forEach(function(element){
-            var option = $('<option />').text(element[1]).val(element[0]).attr('tonart', element[2]);
-            select_song.append(option);
-        });
-        var select_mode = $('<select />').css("width", "8%");
-        //select_song.onchange=function(){make_mode_selector()};
-        //list_mode = ["1","2","3"];
-        //list_mode.forEach(function(element){
-        //    var option = $('<option />').text(element).val(element);
-        //    select_mode.append(option);
-        //});
-        var div = $('<div />');
-        div.append(select_song);
-        div.append(select_mode);
-        
-        $(select_song).select2();
-        $(select_mode).select2();
-        return div;
-    };
-
-
-    $("#all_selected_songs_placeholder").append(make_song_selector()).append($('<br>'));
-
+    $("#all_selected_songs_placeholder").
+      append(make_song_selector()).
+      append($('<br>'));
     function add_song_fct() {
-        $("#all_selected_songs_placeholder").append(make_song_selector()).append($('<br>'));
+        $("#all_selected_songs_placeholder").append(make_song_selector());
+        $("#all_selected_songs_placeholder").append($('<br>'));
     }
-
     $("#btn_get_lyrics").click(function(){
-        var selected_song = $("#selected_song").val();
-        var selected_mode = $("#selected_mode").val();
-        var data = {"song": selected_song, "mode": selected_mode};
+        var selected_songs = [];
+        $.each($(".class_selected_songs"), function(){
+             selected_songs.push($(this).select2().find(":selected").val());
+          });
+        var selected_modes = [];
+        $.each($(".class_selected_modes"), function(){
+             selected_modes.push($(this).select2().find(":selected").val());
+          });
+        var data = {"songs": selected_songs, "modes": selected_modes};
         $.ajax({
           contentType: 'application/json',
           type: 'POST',
           url: 'getsong',
           data: JSON.stringify(data),
           success: function(d){
-            $("#show_lyrics").html(d.lyrics);
-            $("#show_pdf").remove();
-            $("#show_pdf_placeholder").append(d.path);
+            // todo: show new pdf, see below
+            console.log(d);
+            // $("#show_lyrics").html(d.lyrics);
+            // $("#show_pdf").remove();
+            // $("#show_pdf_placeholder").append(d.path);
           },
           error: function(obj, st, err){
             alert(err);
           }
         });
     });
-
-
+    $('#all_selected_songs_placeholder').on('change', '.class_selected_songs', function(){
+        make_mode_selector(this);
+      }
+    );
 </script>
 </html>
