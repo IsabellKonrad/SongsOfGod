@@ -5,7 +5,7 @@ import sys
 import subprocess
 import scipy
 
-chords = ['Ces','as','Ges', 'es', 'Des', 'b', 'As', 'f', 'Es', 'c', 'B', 'g', 'F', 'd', 'C', 
+chords = ['Ces','as','Ges', 'es', 'Des', '*b', 'As', 'f', 'Es', 'c', 'B', 'g', 'F', 'd', 'C', 
           'a', 'G', 'e', 'D', 'h', 'A', 'fis', 'E', 'cis', 'H', 'gis', 'Fis', 'dis', 
           'Cis', 'ais', 'Gis', 'eis', 'Dis', 'his', 'Ais', 'fisis', 'Eis', 'cisis', 'His']
 
@@ -13,6 +13,9 @@ def chord_to_number(chord):
     if 'moll' in chord:
         chord = chord.lower()
         chord = chord.replace('moll','')
+    if 'm' in chord:
+        chord = chord.lower()
+        chord = chord.replace('m','')
     if '#' in chord:
         chord = chord.replace('#','is')
     return chords.index(chord)

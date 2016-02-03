@@ -16,3 +16,11 @@ body {
 .top-buffer {
 	margin-top: 50px;
 }
+
+.placeholder_selectgroup {
+    margin-bottom: 10px;
+}
+
+.select2-container .select2-choice { 
+    height: 2px; 
+} 

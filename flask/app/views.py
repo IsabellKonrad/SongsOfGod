@@ -22,7 +22,7 @@ def make_songlist():
                 m = 'Dur'
             else:
                 m = 'Moll'
-            g.write(song + ':' + songname + ':' + m + '\n')
+            g.write(song + ':' + songname + ':' + mode + '\n')
     g.close()
 
 
@@ -96,6 +96,7 @@ def getsong():
     songs_and_modes = zip(content["songs"], content["modes"])
     path = create_pdf(songs_and_modes)
     source_url = url_for('static', filename='./' + path + '.pdf')
+    print source_url
     pdf_path = '<embed id="show_pdf" src="' + source_url + \
         '" width="600" height="700" type="application/pdf">'
     return jsonify({"path": pdf_path})

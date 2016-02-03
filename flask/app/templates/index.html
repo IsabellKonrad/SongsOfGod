@@ -11,10 +11,10 @@
 
    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
+   <link href="../static/css/bootstrap.min.css" rel="stylesheet">
    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
-
-   <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+   
    <link href="../static/css/SongsOfGod.css" rel="stylesheet" type="text/css">
 
 </head>
@@ -30,9 +30,10 @@
 
       <div id="all_selected_songs_placeholder"></div>
 
-      <button onclick="add_song_fct()" id="btn_add_song" class="btn btn-info"> Add song! </button>
+      <button onclick="add_song_fct()" id="btn_add_song" class="btn btn-info"> Lied hinzufügen </button>
 
-      <button type="submit" id="btn_get_lyrics" class="btn btn-primary"> Get Lyrics! </button>
+      <button type="submit" id="btn_get_lyrics" class="btn btn-primary"> PDF erzeugen </button>
+
       <br>
       <br>
     </div>
@@ -45,46 +46,61 @@
 <script>
     make_song_selector = function(){
         var div = $('<div />').addClass("placeholder_selectgroup");
-        var select_song = $('<select />').addClass("class_selected_songs").css("width", "35%");;
+
+        var select_song = $('<select />').addClass("class_selected_songs").css("width", "35%");
         div.append(select_song);
         $(select_song).select2({
-          placeholder: "Song"
+          placeholder: "Lied"
         });
+
+        var span_space = $('<span />').css("margin-left","5px").css("margin-right","5px");
+        div.append(span_space);
+
         var songlist = {{ songlist|safe }};
         songlist.forEach(function(element){
-            var option = $('<option />').text(element[1]).val(element[0]).attr('data-tonart', element[2]);
+            var option = $('<option />').text(element[1]).val(element[0]);
+            option.attr('data-tonart', element[2]);
             select_song.append(option);
         });
-        var select_mode = $('<select />').css("width", "8%").addClass("class_selected_modes");
+        var select_mode = $('<select />').css("width", "10%").addClass("class_selected_modes");
         div.append(select_mode);
         $(select_mode).select2({
           placeholder: "Tonart",
           minimumResultsForSearch: Infinity
         });
+
+        var del_button = $('<button />').addClass("btn btn-danger btn-sm").text("Entfernen").css("margin-left","9px").on("click", function() {delete_song(this);});
+        div.append(del_button);
         return div;
+    };
+
+    delete_song = function(that){
+        var div_to_delete = $(that).parent(".placeholder_selectgroup");
+        div_to_delete.remove();
     };
 
     make_mode_selector = function(that){
         var tonart = $(that).select2().find(":selected").data("tonart");
-        if (tonart == 'Dur') {
-            var available_modes = ["As", "Es", "B", "F", "C", "G", "D", "A", "E"];
+        first_letter = tonart.charAt(0);
+        if (first_letter == first_letter.toUpperCase()) {
+            var available_modes = [tonart, "As", "Es", "B", "F", "C", "G", "D", "A", "E"];
         } else {
-            var available_modes = ["f", "c", "g", "d", "a", "e", "h", "fis", "cis"];
+            var available_modes = [tonart, "f", "c", "g", "d", "a", "e", "h", "fis", "cis"];
         }
-        var selected_mode = $(that).parent().children(".class_selected_modes");
-        selected_mode.empty().trigger("change");
+        var select_mode = $(that).parent().children(".class_selected_modes");
+        select_mode.empty().trigger("change");
         available_modes.forEach(function(element){
             var option = $('<option />').text(element).val(element);
-            selected_mode.append(option);
+            select_mode.append(option);
+        });
+        $(select_mode).select2({
+          minimumResultsForSearch: Infinity
         });
     };
 
-    $("#all_selected_songs_placeholder").
-      append(make_song_selector()).
-      append($('<br>'));
+    $("#all_selected_songs_placeholder").append(make_song_selector());
     function add_song_fct() {
         $("#all_selected_songs_placeholder").append(make_song_selector());
-        $("#all_selected_songs_placeholder").append($('<br>'));
     }
 
     $("#btn_get_lyrics").click(function(){
@@ -95,6 +111,7 @@
         var selected_modes = [];
         $.each($(".class_selected_modes"), function(){
              selected_modes.push($(this).select2().find(":selected").val());
+             $(this).select2({minimumResultsForSearch: Infinity});
           });
         var data = {"songs": selected_songs, "modes": selected_modes};
         $.ajax({

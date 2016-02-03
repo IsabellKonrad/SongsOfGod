@@ -15,7 +15,7 @@ from sklearn.metrics import classification_report
 import pickle
 
 
-chords_X = ['Ces','as','Ges', 'es', 'Des', 'b', 'As', 'f', 'Es', 'c', 'B', 'g', 'F', 'd', 'C', 
+chords_X = ['Ces','as','Ges', 'es', 'Des', '*b', 'As', 'f', 'Es', 'c', 'B', 'g', 'F', 'd', 'C', 
           'a', 'G', 'e', 'D', 'h', 'A', 'fis', 'E', 'cis', 'H', 'gis', 'Fis', 'dis', 
           'Cis', 'ais', 'Gis', 'eis', 'Dis', 'his', 'Ais', 'fisis', 'Eis', 'cisis', 'His']
 nX = len(chords_X)
@@ -26,6 +26,9 @@ def chord_to_number_X(chord):
     if 'moll' in chord:
         chord = chord.lower()
         chord = chord.replace('moll','')
+    if 'm' in chord:
+        chord = chord.lower()
+        chord = chord.replace('m','')
     if '#' in chord:
         chord = chord.replace('#','is')
     return chords_X.index(chord)
