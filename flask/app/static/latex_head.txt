@@ -30,50 +30,53 @@
 \usepackage{ulem1}
 
 
-%Pagestyle
+
+%% Pagestyle
 \pagestyle{fancy}
 
-% die obere Linie
-\newlength{\headrulelength}
-\newlength{\headrulelengthe}
-\newlength{\headrulelengthee}
+%% Der Seitenanfang
 
-\renewcommand{\headrulewidth}{0cm}
-\setlength{\headrulelength}{\headwidth}
-\setlength{\headrulelengthe}{\headwidth}
-\setlength{\headrulelengthee}{\headwidth}
+\renewcommand{\headrule}{}
 
-\addtolength{\headrulelength}{-0.9cm}
-\addtolength{\headrulelengthe}{-1.3cm}
-\addtolength{\headrulelengthee}{-0.7cm}
+%% Gitarre und Rakete
 
-\renewcommand{\headrule}{
-\ifodd\thepage 
- \vbox to 2pt{{\hbox to \headrulelengthe{\hrulefill}\vss}}
- \vbox to 11pt{{\hbox to \headrulelength{\hrulefill}\vss}}
-\else 
- {\hskip 1.cm \vbox to 2pt{{\hbox to \headrulelength{\hrulefill}\vss}}}
- {\mbox{} \hskip 0.725cm \vbox to 11pt{{\hbox to \headrulelengthee{\hrulefill}\vss}}}
- 
-\fi
-}
+%% die obere Linie
+%\newlength{\headrulelength}
+%\newlength{\headrulelengthe}
+%\newlength{\headrulelengthee}
 
+%\renewcommand{\headrulewidth}{0cm}
+%\setlength{\headrulelength}{\headwidth}
+%\setlength{\headrulelengthe}{\headwidth}
+%\setlength{\headrulelengthee}{\headwidth}
 
-%Die Gitarre und Rakete
+%\addtolength{\headrulelength}{-0.9cm}
+%\addtolength{\headrulelengthe}{-1.3cm}
+%\addtolength{\headrulelengthee}{-0.7cm}
+
+%\renewcommand{\headrule}{
+%\ifodd\thepage 
+% \vbox to 2pt{{\hbox to \headrulelengthe{\hrulefill}\vss}}
+% \vbox to 11pt{{\hbox to \headrulelength{\hrulefill}\vss}}
+%\else 
+% {\hskip 1.cm \vbox to 2pt{{\hbox to \headrulelength{\hrulefill}\vss}}}
+% {\mbox{} \hskip 0.725cm \vbox to 11pt{{\hbox to \headrulelengthee{\hrulefill}\vss}}}
+%\fi
+%}
 %\fancyhead[OR]{\vbox to -23pt {\quad\it \hspace{-0.05cm} \includegraphics[width=1cm]{bilder/fisch.jpg} \hspace{0.08cm} \ }\vspace{0.5cm}}
 %\fancyhead[OR]{\vbox to -17pt {\qquad\it \hspace{0.5cm} \includegraphics[width=1cm]{bilder/fisch.jpg} \hspace{-0.18cm} \ }\vspace{0.6cm}}
 %\fancyhead[EL]{\vbox to -17pt {\mbox{} \hspace{-0.3cm}\includegraphics[width=1.4cm]{bilder/gitarre.jpg} \hspace{0.08cm} \ }\vspace{0.5cm}}
 
 
-%Das Zeilenende
+%%Das Seitenende
 %\fancyfoot[C]{$\cdot$\,\thepage{}\,$\cdot$}
 %\fancyfoot[C]{\hspace{-0.9cm}\color{shadecolordark}\vspace{-.4cm}$\cdot$\,\thepage{}\,$\cdot$}
-\setcounter{page}{2} 
+\setcounter{page}{1} 
 \fancyfoot[C]{\color{shadecolordark}\vspace{-1.0cm}\eighthnote\ \,\thepage{}\,\ \eighthnote}
 
 
 
-%Formatierung
+%% Formatierung
 \newcommand{\h}[1]{\textsuperscript{#1}}
 \newcommand{\wdh}{{\it (2x)}}
 \newcommand{\wdhh}{{\it (3x)}}
@@ -84,7 +87,7 @@
 
 
 
-%Farben
+%% Farben
  \definecolor{hellgrau1}{RGB}{100,149,237}
  \definecolor{hellgrau}{RGB}{176,196,222}
  
@@ -92,16 +95,18 @@
  \definecolor{shadecolor}{RGB}{176,196,222}
  \definecolor{shadecolordark}{rgb}{0,0,0}
 
+
+%% Titel
 \newcommand{\titelframe}{\centerline{
  \artdecoframe[0.80\textwidth]{%
   \begin{center}
-   \large \sc Alles was atmet -- lobe den Herrn\\
+   \large \sc Mein Titel\\
   \end{center}
 }}}
 
 
 
-%Umgebungen
+%% Umgebungen
 \newcommand{\bleim}[1]{dummy #1 a}
 \newenvironment{song}[1]{
 \renewcommand{\bleim}[1]{%\twonotes\ 
@@ -120,13 +125,11 @@
 \setulcolor{shadecolordark}
 
 \begin{document}
-\pagestyle{empty}
+%\pagestyle{empty}
 \sffamily
-\quad
 
 %\vspace{2.5cm}
 %\titelframe
-%\newpage
 
 \begin{multicols}{2}
 \flushleft

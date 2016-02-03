@@ -24,3 +24,8 @@ body {
 .select2-container .select2-choice { 
     height: 2px; 
 } 
+
+.checkbox-jazz{
+    width: 25px;
+    height: 25px;
+}

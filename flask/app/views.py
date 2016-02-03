@@ -58,7 +58,7 @@ def delete_pdfs_texs():
         os.remove(tex)
 
 
-def create_pdf(songs_and_modes):
+def create_pdf(songs_and_modes, jazz):
 
     delete_pdfs_texs()
     latex_head_path = 'app/static/latex_head.txt'
@@ -72,7 +72,7 @@ def create_pdf(songs_and_modes):
         g = open(songpath,'r')
         song_content = g.read()
         g.close()
-        song_content = transpose_song(song_content, mode)
+        song_content = transpose_song(song_content, mode, jazz)
         content = content + '\n' + song_content + '\n' 
 
     content = content + '\\end{multicols}\n\\end{document}'
@@ -95,7 +95,8 @@ def create_pdf(songs_and_modes):
 def getsong():
     content = request.get_json(silent=True)
     songs_and_modes = zip(content["songs"], content["modes"])
-    path = create_pdf(songs_and_modes)
+    jazz = content["jazz"]
+    path = create_pdf(songs_and_modes, jazz)
     source_url = url_for('static', filename='./' + path + '.pdf')
     print source_url
     pdf_path = '<embed id="show_pdf" src="' + source_url + \

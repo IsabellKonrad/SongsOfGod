@@ -34,6 +34,8 @@
 
       <button type="submit" id="btn_get_lyrics" class="btn btn-primary"> PDF erzeugen </button>
 
+      <span style="margin-right: 1%; margin-left: 5%; font-size: 15px;">Akkorde in Jazz Notation</span>
+      <input id="checkbox-jazz" class="checkbox-jazz" type="checkbox";>
       <br>
       <br>
     </div>
@@ -113,7 +115,8 @@
              selected_modes.push($(this).select2().find(":selected").val());
              $(this).select2({minimumResultsForSearch: Infinity});
           });
-        var data = {"songs": selected_songs, "modes": selected_modes};
+        var jazz = $("#checkbox-jazz").is(":checked");
+        var data = {"songs": selected_songs, "modes": selected_modes, "jazz": jazz};
         $.ajax({
           contentType: 'application/json',
           type: 'POST',
@@ -128,6 +131,7 @@
           }
         });
     });
+
 
     $('#all_selected_songs_placeholder').on('change', '.class_selected_songs', function(){
         make_mode_selector(this);

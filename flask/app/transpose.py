@@ -9,6 +9,10 @@ chords = ['Ces','as','Ges', 'es', 'Des', '*b', 'As', 'f', 'Es', 'c', 'B', 'g', '
           'a', 'G', 'e', 'D', 'h', 'A', 'fis', 'E', 'cis', 'H', 'gis', 'Fis', 'dis', 
           'Cis', 'ais', 'Gis', 'eis', 'Dis', 'his', 'Ais', 'fisis', 'Eis', 'cisis', 'His']
 
+chords_jazz = ['Cb','Abm','Gb', 'Ebm', 'Db', 'Bbm', 'Ab', 'Fm', 'Eb', 'Cm', 'Bb', 'Gm', 'F', 'Dm', 'C', 
+          'Am', 'G', 'Em', 'D', 'Bm', 'A', 'F#m', 'E', 'C#m', 'B', 'G#m', 'F#', 'D#m', 
+          'C#', 'A#m', 'G#', 'E#m', 'D#', 'B#m', 'A#', 'F##m', 'E#', 'C##m', 'B#']
+
 def chord_to_number(chord):
     if 'moll' in chord:
         chord = chord.lower()
@@ -24,30 +28,34 @@ def get_mode(content):
     mode = content.split('tonart{')[1].split('}')[0]
     return mode 
 
-def transpose_chord(old_chord, new_mode, old_mode):
+def transpose_chord(old_chord, new_mode, old_mode, jazz):
     number = chord_to_number(old_chord)
     number = number - old_mode
     new_number = number + new_mode
-    return chords[new_number]
+    if jazz:
+        new_chord = chords_jazz[new_number]
+    else:
+        new_chord = chords[new_number]
+    return new_chord
 
 def set_new_mode(content, new_mode, old_mode):
     return content.replace('%tonart{' + old_mode, '%tonart{' + new_mode)
 
-def handle_inner(inner, new_mode_number, old_mode_number):
+def handle_inner(inner, new_mode_number, old_mode_number, jazz):
     if '\\' in inner:
         old_chord = inner.split('\\')[0]
         addendum = inner.split('\\')[1]
-        new_chord = transpose_chord(old_chord, new_mode_number, old_mode_number)
+        new_chord = transpose_chord(old_chord, new_mode_number, old_mode_number, jazz)
         new_chord = new_chord + '\\' + addendum
     elif '|' in inner:
         old_chord = inner.replace('|','')
-        new_chord = transpose_chord(old_chord, new_mode_number, old_mode_number)
+        new_chord = transpose_chord(old_chord, new_mode_number, old_mode_number, jazz)
         new_chord = new_chord + '|'
     else:
-        new_chord = transpose_chord(inner, new_mode_number, old_mode_number)
+        new_chord = transpose_chord(inner, new_mode_number, old_mode_number, jazz)
     return new_chord
 
-def transpose_song(content, new_mode):
+def transpose_song(content, new_mode, jazz=False):
     old_mode = get_mode(content)
     new_mode_number = chord_to_number(new_mode)
     old_mode_number = chord_to_number(old_mode)
@@ -60,11 +68,11 @@ def transpose_song(content, new_mode):
         if '/' in inner:
             old_chord1 = inner.split('/')[0]
             old_chord2 = inner.split('/')[1]
-            new_chord1 = handle_inner(old_chord1, new_mode_number, old_mode_number)
-            new_chord2 = handle_inner(old_chord2, new_mode_number, old_mode_number)
+            new_chord1 = handle_inner(old_chord1, new_mode_number, old_mode_number, jazz)
+            new_chord2 = handle_inner(old_chord2, new_mode_number, old_mode_number, jazz)
             new_chord = new_chord1 + '/' + new_chord2
         else:
-            new_chord = handle_inner(inner, new_mode_number, old_mode_number)
+            new_chord = handle_inner(inner, new_mode_number, old_mode_number, jazz)
         new_content = new_content + '[' + new_chord + ']' + part.split(']')[1]
     new_content = set_new_mode(new_content, new_mode, old_mode)
     return new_content
