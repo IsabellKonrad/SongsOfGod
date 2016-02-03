@@ -2,3 +2,5 @@ songs/*
 .ipynb_checkpoints/
 *~
 *.pyc
+*.tex
+*.pdf
