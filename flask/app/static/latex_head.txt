@@ -95,8 +95,7 @@
 \newcommand{\titelframe}{\centerline{
  \artdecoframe[0.80\textwidth]{%
   \begin{center}
-   \LARGE \sc Alles was atmet -- lobe den Herrn\\
-   \Huge Ein Liederheft\\
+   \large \sc Alles was atmet -- lobe den Herrn\\
   \end{center}
 }}}
 
@@ -125,7 +124,7 @@
 \sffamily
 \quad
 
-%\vspace{3.5cm}
+%\vspace{2.5cm}
 %\titelframe
 %\newpage
 

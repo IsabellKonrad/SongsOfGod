@@ -35,9 +35,6 @@
       <button type="submit" id="btn_get_lyrics" class="btn btn-primary"> Get Lyrics! </button>
       <br>
       <br>
-      <div id="show_lyrics" style="background-color: white; white-space: pre; width: 50%"> Hier kommt der Liedtext hin </div>
-
-      <br>
     </div>
 
     <div id="show_pdf_placeholder"></div>
@@ -66,6 +63,7 @@
         });
         return div;
     };
+
     make_mode_selector = function(that){
         var tonart = $(that).select2().find(":selected").data("tonart");
         if (tonart == 'Dur') {
@@ -80,6 +78,7 @@
             selected_mode.append(option);
         });
     };
+
     $("#all_selected_songs_placeholder").
       append(make_song_selector()).
       append($('<br>'));
@@ -87,6 +86,7 @@
         $("#all_selected_songs_placeholder").append(make_song_selector());
         $("#all_selected_songs_placeholder").append($('<br>'));
     }
+
     $("#btn_get_lyrics").click(function(){
         var selected_songs = [];
         $.each($(".class_selected_songs"), function(){
@@ -103,17 +103,15 @@
           url: 'getsong',
           data: JSON.stringify(data),
           success: function(d){
-            // todo: show new pdf, see below
-            console.log(d);
-            // $("#show_lyrics").html(d.lyrics);
-            // $("#show_pdf").remove();
-            // $("#show_pdf_placeholder").append(d.path);
+            $("#show_pdf").remove();
+            $("#show_pdf_placeholder").append(d.path);
           },
           error: function(obj, st, err){
             alert(err);
           }
         });
     });
+
     $('#all_selected_songs_placeholder').on('change', '.class_selected_songs', function(){
         make_mode_selector(this);
       }

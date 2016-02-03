@@ -4,6 +4,7 @@ import json
 import glob
 import os.path
 import subprocess
+from time import gmtime, strftime
 
 
 def make_songlist():
@@ -61,45 +62,40 @@ def delete_pdfs_texs():
         os.remove(tex)
 
 
-def create_pdf(song, mode):
-    delete_pdfs_texs()
+def create_pdf(songs_and_modes):
 
-    songpath = '../songs/' + song + '_' + mode
+    delete_pdfs_texs()
     latex_head_path = 'app/static/latex_head.txt'
     f = open(latex_head_path, 'r')
     latex_head = f.read()
     f.close()
 
-    content = latex_head + \
-        '\n \\input{' + songpath + '}\n \\end{multicols}\n\\end{document}'
+    content = latex_head
+    for song, mode in songs_and_modes:
+        songpath = '../songs/' + song + '_' + mode
+        content = content + '\n \\input{' + songpath + '}\n' 
+    content = content + '\\end{multicols}\n\\end{document}'
 
-    tex_path = song + '_' + mode
-    g = open('app/static/' + tex_path + '.tex', 'w')
+    path = strftime("%Y%m%d_%H%M%S", gmtime())
+
+    g = open('app/static/' + path + '.tex', 'w')
     g.write(content)
     g.close()
 
-    subprocess.call(['pdflatex', 'app/static/' + tex_path + '.tex'])
-    os.remove(tex_path + '.log')
-    os.remove(tex_path + '.aux')
-    os.remove(tex_path + '.out')
-    os.rename(tex_path + '.pdf', 'app/static/' + tex_path + '.pdf')
+    subprocess.call(['pdflatex', 'app/static/' + path + '.tex'])
+    os.remove(path + '.log')
+    os.remove(path + '.aux')
+    os.remove(path + '.out')
+    os.rename(path + '.pdf', 'app/static/' + path + '.pdf')
+    return path
 
 
 @app.route('/getsong', methods=['GET', 'POST'])
-def getsong(song="hereiam"):
+def getsong():
     content = request.get_json(silent=True)
     songs_and_modes = zip(content["songs"], content["modes"])
-    # todo: create corresponding pdf, see below
-    return jsonify({"todo": songs_and_modes})
-
-    song = content["song"]
-    mode = content["mode"]
-    lyrics = get_lyrics(song, mode)
-    create_pdf(song, mode)
-    source_url = url_for('static', filename='./' + song + '_' + mode + '.pdf')
-    tex_path = '<embed id="show_pdf" src="' + source_url + \
+    path = create_pdf(songs_and_modes)
+    source_url = url_for('static', filename='./' + path + '.pdf')
+    pdf_path = '<embed id="show_pdf" src="' + source_url + \
         '" width="600" height="700" type="application/pdf">'
-    return jsonify({"song": song,
-                    "lyrics": lyrics,
-                    "path": tex_path
-                    })
+    return jsonify({"path": pdf_path})
