@@ -2,11 +2,16 @@ from flask import render_template, request, jsonify, url_for
 from app import app
 import json
 import glob
+import os
 import os.path
 import subprocess
 from time import gmtime, strftime
 from transpose import transpose_song
 
+
+if 'ubuntu' in os.getcwd():
+    # on AWS server where cwd is not set properly. Hence this workaround
+    os.chdir('/home/ubuntu/SongsOfGod/flask')
 
 def make_songlist():
     g = open('songlist.txt', 'w')

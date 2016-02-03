@@ -4,3 +4,6 @@ songs/*
 *.pyc
 *.tex
 *.pdf
+*.log
+*.pid
+*.ini
