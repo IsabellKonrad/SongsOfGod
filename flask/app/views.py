@@ -5,24 +5,20 @@ import glob
 import os.path
 import subprocess
 from time import gmtime, strftime
+from transpose import transpose_song
 
 
 def make_songlist():
     g = open('songlist.txt', 'w')
     songs = sorted(glob.glob('../songs/*.tex'))
     for songpath in songs:
-        if '_' not in songpath:
-            h = open(songpath, 'r')
-            content = h.read()
-            h.close()
-            song = songpath.replace('../songs/', '').replace('.tex', '')
-            songname = content.split('begin{song}{')[1].split('}')[0]
-            mode = content.split('tonart{')[1].split('}')[0]
-            if mode.isupper():
-                m = 'Dur'
-            else:
-                m = 'Moll'
-            g.write(song + ':' + songname + ':' + mode + '\n')
+        h = open(songpath, 'r')
+        content = h.read()
+        h.close()
+        song = songpath.replace('../songs/', '').replace('.tex', '')
+        songname = content.split('begin{song}{')[1].split('}')[0]
+        mode = content.split('tonart{')[1].split('}')[0]
+        g.write(song + ':' + songname + ':' + mode + '\n')
     g.close()
 
 
@@ -72,15 +68,20 @@ def create_pdf(songs_and_modes):
 
     content = latex_head
     for song, mode in songs_and_modes:
-        songpath = '../songs/' + song + '_' + mode
-        content = content + '\n \\input{' + songpath + '}\n' 
+        songpath = '../songs/' + song + '.tex'
+        g = open(songpath,'r')
+        song_content = g.read()
+        g.close()
+        song_content = transpose_song(song_content, mode)
+        content = content + '\n' + song_content + '\n' 
+
     content = content + '\\end{multicols}\n\\end{document}'
 
     path = strftime("%Y%m%d_%H%M%S", gmtime())
 
-    g = open('app/static/' + path + '.tex', 'w')
-    g.write(content)
-    g.close()
+    h = open('app/static/' + path + '.tex', 'w')
+    h.write(content)
+    h.close()
 
     subprocess.call(['pdflatex', 'app/static/' + path + '.tex'])
     os.remove(path + '.log')
