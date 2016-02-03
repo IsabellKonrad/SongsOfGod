@@ -46,51 +46,11 @@
 </body>
 
 <script>
-    make_song_selector = function(){
-        var select_song = $('<select />').addClass("class_selected_songs").css("width", "35%");;
-        var songlist = {{ songlist|safe }};
-        songlist.forEach(function(element){
-            var option = $('<option />').text(element[1]).val(element[0]).attr('tonart', element[2]);
-            select_song.append(option);
-        });
-        
-        select_song.onchange=function(){make_mode_selector()};
 
-
-        var select_mode = $('<select />').css("width", "8%");
-        select_mode.empty();
-
-        //list_mode = ["1","2","3"];
-        //list_mode.forEach(function(element){
-        //    var option = $('<option />').text(element).val(element);
-        //    select_mode.append(option);
-        //});
-
-        var div = $('<div />').addClass("placeholder_selectgroup");
-        div.append(select_song);
-        div.append(select_mode);
-
-        $(select_song).select2();
-        $(select_mode).select2();
-
-/*
-        <select id="selected_song">
-        {% for song in songlist %}
-           <option value={{song[0]}} tonart={{song[2]}}>  {{song[1].upper()}}  </option>
-        {% endfor %}
-        </select>
-
-        <select id="selected_mode"></select>
-*/
-
-        return div;
-    };
-
-    make_mode_selector = function(){
+    function make_mode_selector(){
         console.log("abc");
         var tonart = $('option:selected', this).attr('tonart');
         console.log(tonart);
-
         if (tonart == 'Dur') {
             var available_modes = ["As", "Es", "B", "F", "C", "G", "D", "A", "E"];
         } else {
@@ -105,14 +65,36 @@
         });
     };
 
+    function make_song_selector() {
+        var select_song = $('<select />').css("width", "35%");
+        select_song.addEventListener("change", function () {make_mode_selector()}, false);
+        //select_song.onchange=function(){console.log("abc");};
+        var songlist = {{ songlist|safe }};
+        songlist.forEach(function(element){
+            var option = $('<option />').text(element[1]).val(element[0]).attr('tonart', element[2]);
+            select_song.append(option);
+        });
+        var select_mode = $('<select />').css("width", "8%");
+        //select_song.onchange=function(){make_mode_selector()};
+        //list_mode = ["1","2","3"];
+        //list_mode.forEach(function(element){
+        //    var option = $('<option />').text(element).val(element);
+        //    select_mode.append(option);
+        //});
+        var div = $('<div />');
+        div.append(select_song);
+        div.append(select_mode);
+        
+        $(select_song).select2();
+        $(select_mode).select2();
+        return div;
+    };
 
-    $("#all_selected_songs_placeholder").
-      append(make_song_selector()).
-      append($('<br>'));
+
+    $("#all_selected_songs_placeholder").append(make_song_selector()).append($('<br>'));
 
     function add_song_fct() {
-        $("#all_selected_songs_placeholder").append(make_song_selector());
-        $("#all_selected_songs_placeholder").append($('<br>'));
+        $("#all_selected_songs_placeholder").append(make_song_selector()).append($('<br>'));
     }
 
     $("#btn_get_lyrics").click(function(){

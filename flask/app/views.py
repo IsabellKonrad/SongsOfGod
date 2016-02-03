@@ -61,7 +61,6 @@ def delete_pdfs_texs():
 
 def create_pdf(song, mode):
     delete_pdfs_texs()
-
     songpath = '../songs/' + song + '_' + mode
     latex_head_path = 'app/static/latex_head.txt'
     f = open(latex_head_path,'r')
@@ -69,7 +68,6 @@ def create_pdf(song, mode):
     f.close()
 
     content = latex_head + '\n \\input{' + songpath + '}\n \\end{multicols}\n\\end{document}'
-
     tex_path = song + '_' + mode
     g = open('app/static/' + tex_path + '.tex','w')
     g.write(content)
