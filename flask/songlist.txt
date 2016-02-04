@@ -168,6 +168,7 @@ seetheway:See the way:A
 sehtwieguterzuunsist:Seht, wie gut Er zu uns ist:C
 seinlicht:Sein Licht:E
 seiwillkommen:Sei willkommen:a
+sobistnurdu:So bist nur Du:G
 solangeichlebe:Solange ich lebe:E
 tausendjahre:Tausend Jahre:C
 thelordisgraciousandcompassionate:The Lord is gracious and compassionate:G

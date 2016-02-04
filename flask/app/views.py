@@ -3,15 +3,27 @@ from app import app
 import json
 import glob
 import os
+import sys
 import os.path
 import subprocess
 from time import gmtime, strftime
 from transpose import transpose_song
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 
 if 'ubuntu' in os.getcwd():
     # on AWS server where cwd is not set properly. Hence this workaround
     os.chdir('/home/ubuntu/SongsOfGod/flask')
+
+#def make_umlaute(input):
+#    input = input.replace('ae', u'\u00e4')
+#    input = input.replace('oe', u'\u00f6')
+#    input = input.replace('ue', u'\u00fc')
+#    input = input.replace('Ae', u'\u00c4')
+#    input = input.replace('Oe', u'\u00d6')
+#    input = input.replace('Ue', u'\u00dc')
+#    return input
 
 def make_songlist():
     g = open('songlist.txt', 'w')
@@ -23,6 +35,7 @@ def make_songlist():
         song = songpath.replace('../songs/', '').replace('.tex', '')
         songname = content.split('begin{song}{')[1].split('}')[0]
         mode = content.split('tonart{')[1].split('}')[0]
+        #g.write(song + ':' + make_umlaute(songname) + ':' + mode + '\n')
         g.write(song + ':' + songname + ':' + mode + '\n')
     g.close()
 

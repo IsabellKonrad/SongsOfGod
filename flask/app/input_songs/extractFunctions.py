@@ -1,3 +1,8 @@
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 def get_chords_lines(filename):
     f = open(filename,'r')
     
@@ -20,6 +25,17 @@ def get_chords_lines(filename):
             
     return special_lines
 
+def handle_chord(chord):
+    if 'moll' in chord:
+        chord = chord.lower()
+        chord = chord.replace('moll','')
+    if 'm' in chord:
+        chord = chord.lower()
+        chord = chord.replace('m','')
+    if '#' in chord:
+        chord = chord.replace('#','is')
+    return chord
+
 def chords_to_tuples(chord_line):
     chord_line = chord_line.strip('\n')
     indices = []
@@ -33,10 +49,10 @@ def chords_to_tuples(chord_line):
             chord = chord + ltr
         elif ltr == " " and isChord == True:
             isChord = False
-            indices.append((chord, index))
+            indices.append((handle_chord(chord), index))
             chord = ''
     if chord:
-        indices.append((chord, index))
+        indices.append((handle_chord(chord), index))
     return indices
 
 
@@ -57,8 +73,8 @@ def inject_chords(line, chords):
         index_left = tup[1]
         next_part = line[index_left:index_right]
         if len(next_part.strip())==0:
-            new_line = '[' + chord + '|]{\ }' + next_part + new_line
-        elif len(next_part) < 2*len(chord):
+            new_line = '[' + chord + '|]{\quad}' + next_part + new_line
+        elif len(next_part.strip()) < 2*len(chord):
             breakIndex = len(next_part.split(' ')[0])
             next_part = next_part[:breakIndex] + '}' + next_part[breakIndex:]
             new_line = '[' + chord + '|]{' + next_part + new_line
@@ -71,6 +87,16 @@ def inject_chords(line, chords):
         new_line = new_line + '\n'
     return new_line
 
+def content_cleaning(input):
+    input = input.replace("`","'")
+    input = input.replace(u'\u00e4','\\"a')
+    input = input.replace(u'\u00f6','\\"o')
+    input = input.replace(u'\u00fc','\\"u')
+    input = input.replace(u'\u00c4','\\"A')
+    input = input.replace(u'\u00d6','\\"O')
+    input = input.replace(u'\u00dc','\\"U')
+    input = input.replace(u'\u00df','\\ss{}')
+    return input
 
 def txt2latex(filename):
     special_lines = get_chords_lines(filename)
@@ -94,5 +120,9 @@ def txt2latex(filename):
     name = filename.split('.')[0]
     content = '\\begin{song}{' + name[0].upper() + name[1:] + '}\n' + content + '\end{song}'
     g = open(name + '.tex','w')
-    g.write(content.replace("´","'").replace('’',"'").replace("`","'"))
+    g.write(content_cleaning(content))
     g.close()
+
+if __name__ == '__main__':
+    filename = sys.argv[1]
+    txt2latex(filename)
