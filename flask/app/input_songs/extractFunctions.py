@@ -6,18 +6,19 @@ sys.setdefaultencoding('utf-8')
 def get_chords_lines(filename):
     f = open(filename,'r')
     
-    this_line = False
+   # this_line = False
     special_lines = []
     
     for i, line in enumerate(f):
         zahl = i
         space_number = float(line.count(' '))/len(line)
-        if this_line and len(line.strip())>0:
+    #    if this_line and len(line.strip())>0:
+        if space_number <= 0.4 and len(line.strip())>0:
             special_lines.append('llll' + line)
-            this_line = False
+    #        this_line = False
             zahl = -1
-        if space_number > 0.4:
-            this_line = True
+        if space_number > 0.4 and len(line.strip())>0:
+    #        this_line = True
             special_lines.append('cccc' + line)
             zahl = -1
         if zahl != -1:
@@ -96,6 +97,10 @@ def content_cleaning(input):
     input = input.replace(u'\u00d6','\\"O')
     input = input.replace(u'\u00dc','\\"U')
     input = input.replace(u'\u00df','\\ss{}')
+    input = input.replace('Verse 1', '{\\bf 1.}')
+    input = input.replace('Verse 2', '{\\bf 2.}')
+    input = input.replace('Verse 3', '{\\bf 3.}')
+    input = input.replace('Verse 4', '{\\bf 4.}')
     return input
 
 def txt2latex(filename):
@@ -106,19 +111,39 @@ def txt2latex(filename):
     content = ''
     for line in special_lines:
         if 'llll' in line:
+            if line_line:
+                content = content + line_line
             line_line = line[4:]
         if 'cccc' in line:
+            if line_line:
+                content = content + line_line
+                line_line = ''
             chord_line = line[4:]
-        if len(line_line)>0 and len(chord_line)>0:
+        if line_line and chord_line:
             chords = chords_to_tuples(chord_line)
             new_line = inject_chords(line_line, chords)
             content = content + new_line
             line_line = ''
             chord_line = ''
         if 'eeee' in line:
+            if chord_line:
+                chords = chords_to_tuples(chord_line)
+                new_line = inject_chords('',chords)
+                content = content + new_line
+                chord_line = ''
+            if line_line:
+                content = content + line_line
+                line_line = ''
             content = content + '\n'
+    if line_line:
+        content = content + line_line
+    if chord_line:
+        chords = chords_to_tuples(chord_line)
+        new_line = inject_chords('',chords)
+        content = content + new_line
+
     name = filename.split('.')[0]
-    content = '\\begin{song}{' + name[0].upper() + name[1:] + '}\n' + content + '\end{song}'
+    content = '\\begin{song}{' + name[0].upper() + name[1:] + '}\n' + content + '\n\end{song}'
     g = open(name + '.tex','w')
     g.write(content_cleaning(content))
     g.close()

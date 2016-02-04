@@ -10,6 +10,7 @@ atmeinuns:Atme in uns:fis
 awesomeisthelordmosthigh:Awesome is the Lord most high:E
 blessedbeyourname:Blessed be Your name:A
 blessthelord:Bless the Lord:h
+cametomyrescue:Came to my rescue:C
 comeandfillthistemple:Come and fill this temple:E
 comeandgowithme:Come and go with me:E
 comeandletyourpresence:Come and let Your presence:C
@@ -178,6 +179,7 @@ ueberallewelt:Ueber alle Welt:G
 ueberdiebergeunddasmeer:Ueber die Berge und das Meer:E
 unendlich:Unendlich:D
 unserlobpreis:Unser Lobpreis:G
+upfromtheashes:Up from the ashes:G
 vaterdeineliebe:Vater, Deine Liebe:e
 vaterdeslichts:Vater des Lichts:D
 vaterichkommejetztzudir:Vater, ich komme jetzt zu Dir:D
