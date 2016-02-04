@@ -41,7 +41,6 @@ ehreseigott:Ehre sei Gott:G
 einkoenigvollerpracht:Ein Koenig voller Pracht:G
 eristherr:Er ist Herr:E
 erwargottgleich:Er war Gott gleich:G
-eswirdschogleidumpa:Es wird scho glei dumpa:D
 etwasinmir:Etwas in mir:G
 everythingthat:Everything that:E
 facedown:Facedown:a
@@ -158,6 +157,7 @@ opentheeyesofmyheartlord:Open the eyes of my heart Lord:E
 otasteandsee:Oh taste and see:C
 ourgod:Our God is an awesome God:e
 overthemountainsandthesea:Over the mountains and the sea:E
+pledge:Pledge:G
 preistadonai:Preist Adonai:A
 reinigemeinherz:Reinige mein Herz:E
 restoration:Restoration:G
@@ -169,7 +169,6 @@ sehtwieguterzuunsist:Seht, wie gut Er zu uns ist:C
 seinlicht:Sein Licht:E
 seiwillkommen:Sei willkommen:a
 solangeichlebe:Solange ich lebe:E
-takeyourplace:Take your place:E
 tausendjahre:Tausend Jahre:C
 thelordisgraciousandcompassionate:The Lord is gracious and compassionate:G
 thisistheairibreathe:This is the air I breathe:A
