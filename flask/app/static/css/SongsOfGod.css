@@ -14,7 +14,7 @@ body {
 }
 
 .top-buffer {
-	margin-top: 50px;
+	margin-top: 35px;
 }
 
 .placeholder_selectgroup {
@@ -25,7 +25,27 @@ body {
     height: 2px; 
 } 
 
-.checkbox-jazz{
+.checkbox-jazz {
     width: 25px;
     height: 25px;
+}
+
+.nav_link {
+	color: #d9534f;
+	font-weight: bold;
+}
+
+.nav_top {
+	background-color: rgba(255,255,255,0.85);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    margin: 0;
+    background-repeat: no-repeat;
+    border-bottom: 2px solid #d9534f;
+}
+
+.nav-tabs {
+	float: right;
 }

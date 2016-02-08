@@ -16,7 +16,7 @@ if 'ubuntu' in os.getcwd():
     # on AWS server where cwd is not set properly. Hence this workaround
     os.chdir('/home/ubuntu/SongsOfGod/flask')
 
-#def make_umlaute(input):
+# def make_umlaute(input):
 #    input = input.replace('ae', u'\u00e4')
 #    input = input.replace('oe', u'\u00f6')
 #    input = input.replace('ue', u'\u00fc')
@@ -24,6 +24,7 @@ if 'ubuntu' in os.getcwd():
 #    input = input.replace('Oe', u'\u00d6')
 #    input = input.replace('Ue', u'\u00dc')
 #    return input
+
 
 def make_songlist():
     g = open('songlist.txt', 'w')
@@ -60,6 +61,11 @@ def index():
     return render_template("index.html", songlist=songlist)
 
 
+@app.route('/editor')
+def editor():
+    return render_template("editor.html")
+
+
 def get_lyrics(song, mode):
     songpath = '../songs/' + song + '_' + mode + '.tex'
     f = open(songpath, 'r')
@@ -87,11 +93,11 @@ def create_pdf(songs_and_modes, jazz):
     content = latex_head
     for song, mode in songs_and_modes:
         songpath = '../songs/' + song + '.tex'
-        g = open(songpath,'r')
+        g = open(songpath, 'r')
         song_content = g.read()
         g.close()
         song_content = transpose_song(song_content, mode, jazz)
-        content = content + '\n' + song_content + '\n' 
+        content = content + '\n' + song_content + '\n'
 
     content = content + '\\end{multicols}\n\\end{document}'
 
