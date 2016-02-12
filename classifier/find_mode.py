@@ -113,7 +113,7 @@ def make_classifier():
     pickle.dump(clf, open("classifier.bin", "wb"))   
 
 
-##############  Use Classifiert   #####################
+##############  Use Classifier   #####################
 
 def make_X():
     Files = sorted(glob.glob('../songs/*.tex'))
@@ -168,6 +168,7 @@ def mode_to_song(song_name, mode):
             
         new_content = new_content + c_line + '\n'
     return new_content
+
 
 def set_suggested_mode():
     f = open('result.txt','r')

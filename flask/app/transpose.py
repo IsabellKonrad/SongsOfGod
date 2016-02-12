@@ -81,7 +81,7 @@ def transpose_all_songs_all_modes():
     mode_list_major = ['As', 'Es', 'B', 'F', 'C', 'G', 'D', 'A', 'E']
     mode_list_minor = ['f', 'c', 'g', 'd', 'a', 'e', 'h', 'fis','cis']
 
-    for File in sorted(glob.glob('../songs/*.tex')):
+    for File in sorted(glob.glob('../../songs/*.tex')):
         f=open(File,'r')
         content = f.read()
         f.close()
