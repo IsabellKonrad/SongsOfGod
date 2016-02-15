@@ -30,7 +30,7 @@ def handle_chord(chord):
     if 'moll' in chord:
         chord = chord.lower()
         chord = chord.replace('moll','')
-    if 'm' in chord:
+    if 'm' in chord and not 'maj':
         chord = chord.lower()
         chord = chord.replace('m','')
     if '#' in chord:
@@ -97,23 +97,34 @@ def content_cleaning(input):
     input = input.replace(u'\u00d6','\\"O')
     input = input.replace(u'\u00dc','\\"U')
     input = input.replace(u'\u00df','\\ss{}')
-    input = input.replace('Verse 1', '{\\bf 1.}')
-    input = input.replace('Verse 2', '{\\bf 2.}')
-    input = input.replace('Verse 3', '{\\bf 3.}')
-    input = input.replace('Verse 4', '{\\bf 4.}')
     return input
 
-def txt2latex(filename):
+def txt2latex(filename, songtitle):
     special_lines = get_chords_lines(filename)
 
     line_line = ''
     chord_line = ''
     content = ''
+    verse = 1
+    chorus = 0
+    bridge = 0
     for line in special_lines:
         if 'llll' in line:
             if line_line:
                 content = content + line_line
             line_line = line[4:]
+            if 'Verse' in line_line or 'verse' in line_line:
+                content = content + "{\\bf %i.} " % verse
+                line_line = ''
+                verse = verse + 1
+            if 'Chorus' in line_line or 'chorus' in line_line:
+                content = content + "\\begin{chorus}\n"
+                line_line = ''
+                chorus = 1
+            if 'Bridge' in line_line or 'bridge' in line_line:
+                content = content + "\\begin{bridge}\n"
+                line_line = ''
+                bridge = 1
         if 'cccc' in line:
             if line_line:
                 content = content + line_line
@@ -134,6 +145,12 @@ def txt2latex(filename):
             if line_line:
                 content = content + line_line
                 line_line = ''
+            if chorus:
+                content = content + '\\end{chorus}\n'
+                chorus = 0
+            if bridge:
+                content = content + '\\end{bridge}\n'
+                bridge = 0
             content = content + '\n'
     if line_line:
         content = content + line_line
@@ -141,13 +158,22 @@ def txt2latex(filename):
         chords = chords_to_tuples(chord_line)
         new_line = inject_chords('',chords)
         content = content + new_line
+    if bridge:
+        content = content + '\\end{bridge}\n'
+        bridge = 0
+    if chorus:
+        content = content + '\\end{chorus}\n'
+        chorus = 0
+
 
     name = filename.split('.')[0]
-    content = '\\begin{song}{' + name[0].upper() + name[1:] + '}\n' + content + '\n\end{song}'
-    g = open(name + '.tex','w')
+    content = '\\begin{song}{' + songtitle.strip() + '}\n\n' + content + '\n\end{song}'
+    g = open(name + '.txt','w')
     g.write(content_cleaning(content))
     g.close()
 
+
 if __name__ == '__main__':
     filename = sys.argv[1]
-    txt2latex(filename)
+    songtitle = sys.argv[2]
+    txt2latex(filename, songtitle)

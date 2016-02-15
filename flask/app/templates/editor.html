@@ -1,4 +1,23 @@
 {% extends "layout.html" %}
 {% block content %}
-Placeholder for song editor.
+<textarea id="textarea_songtitle" rows="2" cols="33" style="font-family:Lucida Console, Monaco, monospace">
+Liedtitel
+</textarea>  
+<button onclick="check_new_song()" id="btn_check_song" class="btn btn-primary" style="margin-top: -4%; margin-right: 5%; margin-left: 5%;"> Lied überprüfen </button>
+<br>
+<br>
+<textarea id="textarea_songcontent" rows="30" cols="70" style="font-family:Lucida Console, Monaco, monospace">
+Lied mit Akkorden
+</textarea>   
+
+<br> 
+<br>
+
+<div id="show_pdf_check_placeholder"></div>
+
+<br>
+<br>
+{% endblock %}
+{% block script_variables %}
+var songlist = {{ songlist|safe }};
 {% endblock %}

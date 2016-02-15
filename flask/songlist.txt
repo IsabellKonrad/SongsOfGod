@@ -1,4 +1,5 @@
 10000reasons:10000 Reasons:G
+aboveall:Above all:A
 aboveeveryothername:Above Every Other Name:E
 adoramustedomine:Adoramus te Domine:G
 alittlelonger:A little longer:F
@@ -52,6 +53,7 @@ friedewieeinstrom:Friede wie ein Strom:A
 fuerdenkoenig:Fuer den Koenig:A
 fuerdichwillichmeinlobliedsingen:Fuer Dich will ich mein Loblied singen:D
 gabrielsmessage:Gabriel's message:e
+gloryinthehighest:Glory in the highest:C
 godilooktoyou:God I look to You:A
 gottessohn:Gottes Sohn:C
 gottistgegenwaertig:Gott ist gegenwaertig:G
@@ -124,6 +126,7 @@ letmeloveyoumore:Let me love You more:C
 letthenameofthelord:Let the name of the Lord:E
 lightoftheworld:Light of the World:E
 lobedenherrnmeineseele:Lobe den Herrn, meine Seele:a
+lordIgiveyoumyheart:Lord, I give you my heart:G
 lordiliftyournameonhigh:Lord I lift Your name on high:G
 lordyouhavemyheart:Lord You have my heart:D
 luftvonderichlebe:Luft, von der ich lebe:E
@@ -157,6 +160,7 @@ oneway:One Way:G
 opentheeyesofmyheartlord:Open the eyes of my heart Lord:E
 otasteandsee:Oh taste and see:C
 ourgod:Our God is an awesome God:e
+ourgodisgreater:Our god is greater:G
 overthemountainsandthesea:Over the mountains and the sea:E
 pledge:Pledge:G
 preistadonai:Preist Adonai:A
@@ -172,6 +176,7 @@ seiwillkommen:Sei willkommen:a
 sobistnurdu:So bist nur Du:G
 solangeichlebe:Solange ich lebe:E
 tausendjahre:Tausend Jahre:C
+thebeautyofthisman:The beauty of this man:D
 thelordisgraciousandcompassionate:The Lord is gracious and compassionate:G
 thisistheairibreathe:This is the air I breathe:A
 ueberall:Ueberall:G
@@ -203,6 +208,7 @@ wirwollendichhocherhobensehen:Wir wollen Dich hoch erhoben sehen:G
 woichauchstehe:Wo ich auch stehe:C
 wonderfulsavior:Wonderful savior:A
 worthyisthelamb:Worthy is the lamb:C
+worthyofitall:Worthy of it all:D
 wuerdigdaslamm:Wuerdig das Lamm:A
 wunderbarerhirt:Wunderbarer Hirt:G
 youaremyallinall:You are my all in all:D

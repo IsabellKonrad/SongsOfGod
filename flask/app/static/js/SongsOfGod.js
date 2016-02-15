@@ -60,6 +60,25 @@ add_song_fct = function(){
 };
 
 
+check_new_song = function(){
+  var songtitle = $("#textarea_songtitle").val();
+  var songcontent = $("#textarea_songcontent").val();
+  var data = {"songtitle": songtitle, "songcontent": songcontent};
+  $.ajax({
+    contentType: 'application/json',
+    type: 'POST',
+    url: 'checksong',
+    data: JSON.stringify(data),
+    success: function(d){
+      $("#show_pdf_check").remove();
+      $("#show_pdf_check_placeholder").append(d.path);
+    },
+    error: function(obj, st, err){
+      alert(err);
+    }
+  });
+}
+
 $( document ).ready(function() {
   $("#all_selected_songs_placeholder").append(make_song_selector());
   $("#btn_get_lyrics").click(function(){
@@ -92,8 +111,7 @@ $( document ).ready(function() {
 
   $('#all_selected_songs_placeholder').on('change', '.class_selected_songs', function(){
     make_mode_selector(this);
-  }
-  );
+  });
 
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

@@ -8,6 +8,7 @@ import os.path
 import subprocess
 from time import gmtime, strftime
 from transpose import transpose_song
+from add_songs import txt2latex
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -73,19 +74,21 @@ def get_lyrics(song, mode):
     return content
 
 
-def delete_pdfs_texs():
+def delete_pdfs_texs_txts():
     all_pdfs = glob.glob('app/static/*.pdf')
     for pdf in all_pdfs:
         os.remove(pdf)
     all_texs = glob.glob('app/static/*.tex')
     for tex in all_texs:
         os.remove(tex)
+    all_txts = glob.glob('app/static/*.txt')
+    for txt in all_txts:
+        os.remove(txt)
 
 
 def create_pdf(songs_and_modes, jazz):
 
-    delete_pdfs_texs()
-    latex_head_path = 'app/static/latex_head.txt'
+    latex_head_path = 'app/static/latex_head'
     f = open(latex_head_path, 'r')
     latex_head = f.read()
     f.close()
@@ -100,7 +103,6 @@ def create_pdf(songs_and_modes, jazz):
         content = content + '\n' + song_content + '\n'
 
     content = content + '\\end{multicols}\n\\end{document}'
-
     path = strftime("%Y%m%d_%H%M%S", gmtime())
 
     h = open('app/static/' + path + '.tex', 'w')
@@ -117,12 +119,54 @@ def create_pdf(songs_and_modes, jazz):
 
 @app.route('/getsong', methods=['GET', 'POST'])
 def getsong():
+    delete_pdfs_texs_txts()
     content = request.get_json(silent=True)
     songs_and_modes = zip(content["songs"], content["modes"])
     jazz = content["jazz"]
     path = create_pdf(songs_and_modes, jazz)
     source_url = url_for('static', filename='./' + path + '.pdf')
-    print source_url
     pdf_path = '<embed id="show_pdf" src="' + source_url + \
+        '" width="600" height="700" type="application/pdf">'
+    return jsonify({"path": pdf_path})
+
+
+
+def create_pdf_check(songpath):
+    latex_head_path = 'app/static/latex_head'
+    f = open(latex_head_path, 'r')
+    latex_head = f.read()
+    f.close()
+    g = open(songpath,'r')
+    song_content = g.read()
+    g.close()
+    content = latex_head + song_content + '\\end{multicols}\n\\end{document}'
+    path = strftime("%Y%m%d_%H%M%S", gmtime())
+    h = open('app/static/' + path + '.tex', 'w')
+    h.write(content)
+    h.close()
+    subprocess.call(['pdflatex', 'app/static/' + path + '.tex'])
+    os.remove(path + '.log')
+    os.remove(path + '.aux')
+    os.remove(path + '.out')
+    os.rename(path + '.pdf', 'app/static/' + path + '.pdf')
+    return path
+
+
+
+@app.route('/checksong', methods=['GET', 'POST'])
+def checksong():
+    delete_pdfs_texs_txts()
+    content = request.get_json(silent=True)
+    songtitle = content["songtitle"]
+    songcontent = content["songcontent"]
+    print songcontent
+    songpath = 'app/static/' + songtitle.replace(' ','').strip().lower()
+    f = open(songpath + '.txt','w')
+    f.write(songcontent)
+    f.close()
+    txt2latex(songpath + '.txt', songtitle)
+    path = create_pdf_check(songpath + '.txt')
+    source_url = url_for('static', filename='./' + path + '.pdf')
+    pdf_path = '<embed id="show_pdf_check" src="' + source_url + \
         '" width="600" height="700" type="application/pdf">'
     return jsonify({"path": pdf_path})
