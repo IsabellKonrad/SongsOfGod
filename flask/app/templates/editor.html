@@ -1,23 +1,25 @@
 {% extends "layout.html" %}
+
 {% block content %}
 <textarea id="textarea_songtitle" rows="2" cols="33" style="font-family:Lucida Console, Monaco, monospace">
 Liedtitel
 </textarea>  
 <button onclick="check_new_song()" id="btn_check_song" class="btn btn-primary" style="margin-top: -4%; margin-right: 5%; margin-left: 5%;"> Lied überprüfen </button>
+<span id="btn_mode_check_placeholder"> </span>
+<div id="btn_modes_placeholder" style="height: 5px; margin-left:61.3%"> </div>
+
 <br>
 <br>
-<textarea id="textarea_songcontent" rows="30" cols="70" style="font-family:Lucida Console, Monaco, monospace">
+
+<textarea id="textarea_songcontent" rows="30" cols="65" style="margin-right: 3%; font-family:Lucida Console, Monaco, monospace">
 Lied mit Akkorden
 </textarea>   
-
-<br> 
-<br>
-
-<div id="show_pdf_check_placeholder"></div>
+<span id="show_pdf_check_placeholder"> </span>
 
 <br>
 <br>
 {% endblock %}
-{% block script_variables %}
-var songlist = {{ songlist|safe }};
+
+{% block individual_js %}
+<script src="../static/js/AddSongs.js"></script>
 {% endblock %}

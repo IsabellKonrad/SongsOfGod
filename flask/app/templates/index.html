@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+
 {% block content %}
   <div id="all_selected_songs_placeholder"></div>
 
@@ -17,6 +18,11 @@
   <br>
   <br>
 {% endblock %}
+
 {% block script_variables %}
 var songlist = {{ songlist|safe }};
+{% endblock %}
+
+{% block individual_js %}
+<script src="../static/js/SongsOfGod.js"></script>
 {% endblock %}

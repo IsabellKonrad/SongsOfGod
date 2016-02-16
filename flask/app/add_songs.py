@@ -10,6 +10,7 @@ def get_chords_lines(filename):
     special_lines = []
     
     for i, line in enumerate(f):
+        line = line.replace('\t','    ')
         zahl = i
         space_number = float(line.count(' '))/len(line)
     #    if this_line and len(line.strip())>0:
@@ -30,11 +31,13 @@ def handle_chord(chord):
     if 'moll' in chord:
         chord = chord.lower()
         chord = chord.replace('moll','')
-    if 'm' in chord and not 'maj':
+    if 'm' in chord and not 'maj' in chord:
         chord = chord.lower()
         chord = chord.replace('m','')
     if '#' in chord:
         chord = chord.replace('#','is')
+    if 'b' in chord:
+        chord = chord.replace('b','*b')
     return chord
 
 def chords_to_tuples(chord_line):
@@ -113,15 +116,15 @@ def txt2latex(filename, songtitle):
             if line_line:
                 content = content + line_line
             line_line = line[4:]
-            if 'Verse' in line_line or 'verse' in line_line:
+            if 'Verse' in line_line or 'verse' in line_line or 'VERSE' in line_line:
                 content = content + "{\\bf %i.} " % verse
                 line_line = ''
                 verse = verse + 1
-            if 'Chorus' in line_line or 'chorus' in line_line:
+            if 'Chorus' in line_line or 'chorus' in line_line or 'CHORUS' in line_line:
                 content = content + "\\begin{chorus}\n"
                 line_line = ''
                 chorus = 1
-            if 'Bridge' in line_line or 'bridge' in line_line:
+            if 'Bridge' in line_line or 'bridge' in line_line or 'BRIDGE' in line_line:
                 content = content + "\\begin{bridge}\n"
                 line_line = ''
                 bridge = 1
@@ -165,7 +168,7 @@ def txt2latex(filename, songtitle):
         content = content + '\\end{chorus}\n'
         chorus = 0
 
-
+    content = content.replace('\n\n\n','\n\n\\bigskip\n\n')
     name = filename.split('.')[0]
     content = '\\begin{song}{' + songtitle.strip() + '}\n\n' + content + '\n\end{song}'
     g = open(name + '.txt','w')

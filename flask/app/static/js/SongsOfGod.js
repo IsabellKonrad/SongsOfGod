@@ -60,24 +60,6 @@ add_song_fct = function(){
 };
 
 
-check_new_song = function(){
-  var songtitle = $("#textarea_songtitle").val();
-  var songcontent = $("#textarea_songcontent").val();
-  var data = {"songtitle": songtitle, "songcontent": songcontent};
-  $.ajax({
-    contentType: 'application/json',
-    type: 'POST',
-    url: 'checksong',
-    data: JSON.stringify(data),
-    success: function(d){
-      $("#show_pdf_check").remove();
-      $("#show_pdf_check_placeholder").append(d.path);
-    },
-    error: function(obj, st, err){
-      alert(err);
-    }
-  });
-}
 
 $( document ).ready(function() {
   $("#all_selected_songs_placeholder").append(make_song_selector());

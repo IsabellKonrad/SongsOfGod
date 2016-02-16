@@ -9,6 +9,7 @@ import subprocess
 from time import gmtime, strftime
 from transpose import transpose_song
 from add_songs import txt2latex
+from find_mode import use_classifier
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -132,14 +133,14 @@ def getsong():
 
 
 def create_pdf_check(songpath):
-    latex_head_path = 'app/static/latex_head'
+    latex_head_path = 'app/static/latex_head_check'
     f = open(latex_head_path, 'r')
-    latex_head = f.read()
+    latex_head_check = f.read()
     f.close()
     g = open(songpath,'r')
     song_content = g.read()
     g.close()
-    content = latex_head + song_content + '\\end{multicols}\n\\end{document}'
+    content = latex_head_check + song_content + '\n}\n\n\\end{document}'
     path = strftime("%Y%m%d_%H%M%S", gmtime())
     h = open('app/static/' + path + '.tex', 'w')
     h.write(content)
@@ -168,5 +169,25 @@ def checksong():
     path = create_pdf_check(songpath + '.txt')
     source_url = url_for('static', filename='./' + path + '.pdf')
     pdf_path = '<embed id="show_pdf_check" src="' + source_url + \
-        '" width="600" height="700" type="application/pdf">'
+        '" width="350" height="530"  type="application/pdf">'
     return jsonify({"path": pdf_path})
+
+
+@app.route('/getmode', methods=['GET', 'POST'])
+def getmode():
+    content = request.get_json(silent=True)
+    songtitle = content["songtitle"]
+    songpath = 'app/static/' + songtitle.replace(' ','').strip().lower()
+    f = open(songpath + '.txt','r')
+    songcontent = f.read()
+    f.close()
+    mode1, mode2 = use_classifier(songcontent)
+    return jsonify({"mode1": mode1, "mode2": mode2, "mode1f": mode1 + ' ?', "mode2f": mode2 + ' ?'})
+
+@app.route('/setmode', methods=['GET', 'POST'])
+def setmode():
+    content = request.get_json(silent=True)
+    mode = content["mode"]
+
+    return jsonify({})
+
