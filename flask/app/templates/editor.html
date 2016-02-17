@@ -1,23 +1,33 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<textarea id="textarea_songtitle" rows="2" cols="33" style="font-family:Lucida Console, Monaco, monospace">
-Liedtitel
-</textarea>  
-<button onclick="check_new_song()" id="btn_check_song" class="btn btn-primary" style="margin-top: -4%; margin-right: 5%; margin-left: 5%;"> Lied überprüfen </button>
-<span id="btn_mode_check_placeholder"> </span>
-<div id="btn_modes_placeholder" style="height: 5px; margin-left:61.3%"> </div>
+	<textarea id="textarea_songtitle" rows="2" cols="33" style="font-family:Lucida Console, Monaco, monospace">Liedtitel</textarea>
 
-<br>
-<br>
+	<button onclick="check_new_song()" id="btn_check_song" class="btn btn-primary" style="margin-top: -4%; margin-right: 5%; margin-left: 5%;"> Lied überprüfen </button>
 
-<textarea id="textarea_songcontent" rows="30" cols="65" style="margin-right: 3%; font-family:Lucida Console, Monaco, monospace">
-Lied mit Akkorden
-</textarea>   
-<span id="show_pdf_check_placeholder"> </span>
+	<span id="btn_modes_placeholder" class="hidden" style="height: 5px; margin-left:61.3%">
+		<select type="radio" id="select_mode_suggestion" onchange="set_selected_mode(this)">
+			<option value="" selected disabled>Wähle Tonart</option>
+			<option>A</option>
+			<option>B</option>
+			<option>C</option>
+			<option>D</option>
+		</select>
 
-<br>
-<br>
+		<button type="radio" class="btn btn_mode_suggestion" onclick="set_selected_mode(this)" value="C">C</button>
+		<button type="radio" class="btn btn_mode_suggestion" onclick="set_selected_mode(this)" value="cis">cis</button>
+	</span>
+
+	<span id="btn_save_song" class="btn btn-warning hidden"> Lied speichern </span>
+
+	<br>
+	<br>
+
+	<textarea id="textarea_songcontent" rows="30" cols="65" style="margin-right: 3%; font-family:Lucida Console, Monaco, monospace">Lied mit Akkorden</textarea>
+	<span id="show_pdf_check_placeholder"> </span>
+
+	<br>
+	<br>
 {% endblock %}
 
 {% block individual_js %}

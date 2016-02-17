@@ -7,3 +7,5 @@ songs/*
 *.log
 *.pid
 *.ini
+flask/app/static/*.txt
+

@@ -43,14 +43,15 @@ check_mode = function(songcontent){
   });
 }
 
+
 check_new_song = function(){
   var songtitle = $("#textarea_songtitle").val();
   var songcontent = $("#textarea_songcontent").val();
   var data = {"songtitle": songtitle, "songcontent": songcontent};
 
-  var mode_button = $('<button />').attr("id","btn_check_mode").addClass("btn btn-primary")
-    .text("Tonart überprüfen").css("margin-top","-4%").css("margin-left","8%")
-    .on("click", function() {check_mode();});
+  // var mode_button = $('<button />').attr("id","btn_check_mode").addClass("btn btn-primary")
+    // .text("Tonart überprüfen").css("margin-top","-4%").css("margin-left","8%")
+    // .on("click", function() {check_mode();});
 
   $.ajax({
     contentType: 'application/json',
@@ -59,16 +60,26 @@ check_new_song = function(){
     data: JSON.stringify(data),
     success: function(d){
       $("#show_pdf_check").remove();
-      $("#btn_check_mode").remove();
-      $("#btn_mode_2").remove();
-      $("#btn_mode_1").remove();
-      $("#btn_mode_check_placeholder").append(mode_button);
+      // $("#btn_check_mode").remove();
+      // $("#btn_mode_2").remove();
+      // $("#btn_mode_1").remove();
+      // $("#btn_mode_check_placeholder").append(mode_button);
       $("#show_pdf_check_placeholder").append(d.path);
+      $("#btn_modes_placeholder").removeClass("hidden");
     },
     error: function(obj, st, err){
       alert(err);
     }
   });
+}
+
+set_selected_mode = function(e) {
+  $("#btn_save_song").removeClass("hidden");
+  if (!$(e).hasClass('active')){
+    $(e).addClass('active');
+    $(e).siblings().removeClass('active');
+    $(e).siblings().prop('selectedIndex', 0);
+  }
 }
 
 $( document ).ready(function() {

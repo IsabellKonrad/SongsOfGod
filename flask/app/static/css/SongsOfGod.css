@@ -49,3 +49,23 @@ body {
 .nav-tabs {
 	float: right;
 }
+
+.btn_mode_suggestion.active {
+    background-color: SkyBlue;
+}
+
+select.active {
+    background: SkyBlue;
+}
+
+option:checked {
+    background-color: SkyBlue;
+}
+
+option:not(:checked) {
+    background-color: #fff;
+}
+
+.hidden {
+    visibility:hidden;
+}
