@@ -160,7 +160,6 @@ def checksong():
     content = request.get_json(silent=True)
     songtitle = content["songtitle"]
     songcontent = content["songcontent"]
-    print songcontent
     songpath = 'app/static/' + songtitle.replace(' ','').strip().lower()
     f = open(songpath + '.txt','w')
     f.write(songcontent)

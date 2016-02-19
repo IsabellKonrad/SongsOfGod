@@ -1,31 +1,23 @@
 import sys
+import re
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 def get_chords_lines(filename):
     f = open(filename,'r')
-    
-   # this_line = False
     special_lines = []
-    
-    for i, line in enumerate(f):
-        line = line.replace('\t','    ')
-        zahl = i
+    for line in f:
+        line = content_cleaning(line)
         space_number = float(line.count(' '))/len(line)
-    #    if this_line and len(line.strip())>0:
-        if space_number <= 0.4 and len(line.strip())>0:
-            special_lines.append('llll' + line)
-    #        this_line = False
-            zahl = -1
-        if space_number > 0.4 and len(line.strip())>0:
-    #        this_line = True
-            special_lines.append('cccc' + line)
-            zahl = -1
-        if zahl != -1:
+        if len(line.strip())==0:
             special_lines.append('eeee')
-            
+        elif space_number <= 0.4 and len(line.strip())>3:
+            special_lines.append('llll' + line)
+        else:
+            special_lines.append('cccc' + line)            
     return special_lines
+
 
 def handle_chord(chord):
     if 'moll' in chord:
@@ -60,18 +52,53 @@ def chords_to_tuples(chord_line):
     return indices
 
 
+
+def handle_umlaute(line,chords):
+    longer = chords[-1][1] - len(line)
+    if longer > 0:
+        line = line + " " * longer
+    umlaute = [m.start() for m in re.finditer('"', line)]
+
+    for umlaut in umlaute:
+        umlaut = umlaut - 1
+        chords_new = []
+        for tup in chords:
+            chord = tup[0]
+            index = tup[1]
+            if umlaut <= index:
+                index = index + 2
+            chords_new.append((chord, index))
+        chords = chords_new
+
+    sss = [m.start() for m in re.finditer('ss{}', line)]
+    for ss in sss:
+        ss = ss - 1
+        chords_new = []
+        for tup in chords:
+            chord = tup[0]
+            index = tup[1]
+            if ss == index:
+                index = index + 5
+            if ss < index:
+                index = index + 4
+            chords_new.append((chord, index))
+        chords = chords_new
+    return line, chords
+
+
+
 def inject_chords(line, chords):
+    line, chords = handle_umlaute(line, chords)
     n = False
     if "\n" in line:
         line = line.strip('\n')
         n = True
-        
     new_line = ''
-    index_right = len(line)
-    longer = chords[-1][1] - index_right
+   
+    longer = chords[-1][1] - len(line)
     if longer > 0:
         line = line + " " * longer
-        
+    index_right = len(line)
     for tup in reversed(chords):
         chord = tup[0]
         index_left = tup[1]
@@ -93,13 +120,14 @@ def inject_chords(line, chords):
 
 def content_cleaning(input):
     input = input.replace("`","'")
-    input = input.replace(u'\u00e4','\\"a')
-    input = input.replace(u'\u00f6','\\"o')
-    input = input.replace(u'\u00fc','\\"u')
-    input = input.replace(u'\u00c4','\\"A')
-    input = input.replace(u'\u00d6','\\"O')
-    input = input.replace(u'\u00dc','\\"U')
-    input = input.replace(u'\u00df','\\ss{}')
+    input = input.replace(u'\u00E4','\\"a')
+    input = input.replace(u'\u00F6','\\"o')
+    input = input.replace(u'\u00FC','\\"u')
+    input = input.replace(u'\u00C4','\\"A')
+    input = input.replace(u'\u00D6','\\"O')
+    input = input.replace(u'\u00DC','\\"U')
+    input = input.replace(u'\u00DF','\\ss{}')
+    input = input.replace('\t','    ')
     return input
 
 def txt2latex(filename, songtitle):
@@ -112,22 +140,23 @@ def txt2latex(filename, songtitle):
     chorus = 0
     bridge = 0
     for line in special_lines:
+        if 'Verse' in line or 'verse' in line or 'VERSE' in line:
+            content = content + "{\\bf %i.} " % verse
+            line = ''
+            verse = verse + 1
+        if 'Chorus' in line or 'chorus' in line or 'CHORUS' in line:
+            content = content + "\\begin{chorus}\n"
+            line = ''
+            chorus = 1
+        if 'Bridge' in line or 'bridge' in line or 'BRIDGE' in line:
+            content = content + "\\begin{bridge}\n"
+            line = ''
+            bridge = 1
+
         if 'llll' in line:
             if line_line:
                 content = content + line_line
             line_line = line[4:]
-            if 'Verse' in line_line or 'verse' in line_line or 'VERSE' in line_line:
-                content = content + "{\\bf %i.} " % verse
-                line_line = ''
-                verse = verse + 1
-            if 'Chorus' in line_line or 'chorus' in line_line or 'CHORUS' in line_line:
-                content = content + "\\begin{chorus}\n"
-                line_line = ''
-                chorus = 1
-            if 'Bridge' in line_line or 'bridge' in line_line or 'BRIDGE' in line_line:
-                content = content + "\\begin{bridge}\n"
-                line_line = ''
-                bridge = 1
         if 'cccc' in line:
             if line_line:
                 content = content + line_line
@@ -169,10 +198,11 @@ def txt2latex(filename, songtitle):
         chorus = 0
 
     content = content.replace('\n\n\n','\n\n\\bigskip\n\n')
+    content = content_cleaning(content)
     name = filename.split('.')[0]
-    content = '\\begin{song}{' + songtitle.strip() + '}\n\n' + content + '\n\end{song}'
+    content = '\\begin{song}{' + songtitle.strip() + '}\n\n' + content + '\n\\end{song}'
     g = open(name + '.txt','w')
-    g.write(content_cleaning(content))
+    g.write(content)
     g.close()
 
 
