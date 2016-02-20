@@ -152,15 +152,29 @@ def create_pdf_check(songpath):
     os.rename(path + '.pdf', 'app/static/' + path + '.pdf')
     return path
 
-
+def title_cleaning(input):
+    print input
+    input = input.strip().lower()
+    input = input.replace(' ','')
+    input = input.replace("`",'')
+    input = input.replace("'",'')
+    input = input.replace(u'\u00E4','ae')
+    input = input.replace(u'\u00F6','oe')
+    input = input.replace(u'\u00FC','ue')
+    input = input.replace(u'\u00C4','Ae')
+    input = input.replace(u'\u00D6','Oe')
+    input = input.replace(u'\u00DC','Ue')
+    input = input.replace(u'\u00DF','ss')
+    return input
 
 @app.route('/checksong', methods=['GET', 'POST'])
 def checksong():
     delete_pdfs_texs_txts()
     content = request.get_json(silent=True)
     songtitle = content["songtitle"]
+    songpath = title_cleaning(songtitle)
     songcontent = content["songcontent"]
-    songpath = 'app/static/' + songtitle.replace(' ','').strip().lower()
+    songpath = 'app/static/' + songpath
     f = open(songpath + '.txt','w')
     f.write(songcontent)
     f.close()
@@ -172,11 +186,12 @@ def checksong():
     return jsonify({"path": pdf_path})
 
 
+
 @app.route('/getmode', methods=['GET', 'POST'])
 def getmode():
     content = request.get_json(silent=True)
-    songtitle = content["songtitle"]
-    songpath = 'app/static/' + songtitle.replace(' ','').strip().lower()
+    songtitle = title_cleaning(content["songtitle"])
+    songpath = 'app/static/' + songtitle
     f = open(songpath + '.txt','r')
     songcontent = f.read()
     f.close()

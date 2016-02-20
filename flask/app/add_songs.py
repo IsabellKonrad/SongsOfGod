@@ -77,8 +77,6 @@ def handle_umlaute(line,chords):
         for tup in chords:
             chord = tup[0]
             index = tup[1]
-            if ss == index:
-                index = index + 5
             if ss < index:
                 index = index + 4
             chords_new.append((chord, index))
@@ -129,6 +127,7 @@ def content_cleaning(input):
     input = input.replace(u'\u00DF','\\ss{}')
     input = input.replace('\t','    ')
     return input
+
 
 def txt2latex(filename, songtitle):
     special_lines = get_chords_lines(filename)
@@ -200,7 +199,8 @@ def txt2latex(filename, songtitle):
     content = content.replace('\n\n\n','\n\n\\bigskip\n\n')
     content = content_cleaning(content)
     name = filename.split('.')[0]
-    content = '\\begin{song}{' + songtitle.strip() + '}\n\n' + content + '\n\\end{song}'
+    songtitle = content_cleaning(songtitle).strip()
+    content = '\\begin{song}{' + songtitle + '}\n\n' + content + '\n\\end{song}'
     g = open(name + '.txt','w')
     g.write(content)
     g.close()
