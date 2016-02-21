@@ -90,15 +90,3 @@ def mode_to_song(song_name, mode):
     g.write(new_content)
     g.close()
 
-
-def set_suggested_mode():
-    f = open('result.txt','r')
-    for line in f:
-        song_name = line.split(',')[-1].strip()
-        mode = line.split(',')[0].split(':')[1].strip()
-        new_content = mode_to_song(song_name, mode)
-                    
-        h = open('../songs/' + line.split(',')[-1].strip() + '-s.tex','w')
-        h.write(new_content) 
-        h.close()
-    f.close()

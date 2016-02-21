@@ -37,17 +37,17 @@ check_new_song = function(){
   var songtitle = $("#textarea_songtitle").val();
   var songcontent = $("#textarea_songcontent").val();
   var data = {"songtitle": songtitle, "songcontent": songcontent};
-  var select_mode = $('<select />').css("width", "10%").prop("type","radio").addClass("btn btn_mode_suggestion")
-    .attr("id","select_mode").on("change", function() {set_selected_mode(this);});
-  var option = $('<option />').val("").text("andere Tonart");
-  option.disabled = true;
-  select_mode.append(option)
+  var select_mode = $('<select />').prop("type","radio").css("width", "135px").css("margin-top","3%")
+    .addClass("btn btn_mode_suggestion").attr("id","select_mode").css("margin-right","1%")
+    .on("change", function() {set_selected_mode(this);});
+  var option = $('<option />').val("").text("andere Tonart").attr("disabled", "disabled");
+  select_mode.append(option);
   var modes_vec = ["As","f","Es","c","B","g","F","d","C","a","G","e","D","h","A","fis","E","cis"];
   modes_vec.forEach(function(element){
     var option = $('<option />').text(element).val(element);
     select_mode.append(option);});
-  $(select_mode).select2({
-    minimumResultsForSearch: Infinity});
+  select_mode.prop('selectedIndex', 0)
+  //$(select_mode).select2({minimumResultsForSearch: Infinity});
 
   $.ajax({
     contentType: 'application/json',
@@ -59,11 +59,11 @@ check_new_song = function(){
       var mode1 = d.mode1;
       var mode2 = d.mode2;
       var btn_mode_1 = $('<button />').prop("type","radio").attr("id","btn_mode_1").text(mode1)
-        .addClass("btn btn_mode_suggestion").css("margin-top", "-8%").css("margin-left","1%")
-        .val(mode1).on("click", function() {set_selected_mode(this);});
+        .addClass("btn btn_mode_suggestion").val(mode1).css("margin-top","3%")
+        .css("margin-right","1%").on("click", function() {set_selected_mode(this);});
       var btn_mode_2 = $('<button />').prop("type","radio").attr("id","btn_mode_2").text(mode2)
-        .addClass("btn btn_mode_suggestion").css("margin-top", "-8%").css("margin-right","1%")
-        .val(mode2).css("margin-left","1%").on("click", function() {set_selected_mode(this);});
+        .addClass("btn btn_mode_suggestion").css("margin-right","1%").css("margin-top","3%")
+        .val(mode2).on("click", function() {set_selected_mode(this);});
       
       $("#btn_modes_placeholder").append(btn_mode_1);
       $("#btn_modes_placeholder").append(btn_mode_2);

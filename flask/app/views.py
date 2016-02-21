@@ -173,7 +173,7 @@ def checksong():
     mode1, mode2 = use_classifier(songcontent)
     path = create_pdf_check(songpath + '.txt')
     source_url = url_for('static', filename='./' + path + '.pdf')
-    pdf_path = '<embed id="show_pdf_check" style="margin-bottom: 5%" src="' + source_url + \
+    pdf_path = '<embed id="show_pdf_check" style="margin-top: 2%" src="' + source_url + \
         '" width="350" height="530"  type="application/pdf">'
     return jsonify({"path": pdf_path, "mode1": mode1, "mode2": mode2})
 

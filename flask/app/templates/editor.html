@@ -1,22 +1,30 @@
 {% extends "layout.html" %}
 
 {% block content %}
+<div class="row">
+    <div class="col-md-7">
+
 	<textarea id="textarea_songtitle" rows="2" cols="33" style="font-family:Lucida Console, Monaco, monospace">Liedtitel</textarea>
 
 	<button onclick="check_new_song()" id="btn_check_song" class="btn btn-primary" style="margin-top: -4%; margin-right: 5%; margin-left: 5%;"> Lied überprüfen </button>
 
-	<span id="btn_modes_placeholder" class="hidden" style="height: 5px; margin-left:61.3%"></span>
+    <br>
+    <br>
 
-	<span id="btn_save_song" class="btn btn-info hidden" style="margin-top: -8%" onclick="save_song()"> Lied speichern </span>
+    <textarea id="textarea_songcontent" rows="30" cols="65" style="margin-right: 3%; font-family:Lucida Console, Monaco, monospace">Lied mit Akkorden</textarea>
 
+</div>
+<div class="col-md-5">
+	<span id="btn_modes_placeholder" class="hidden" style="height: 5px"></span>
+
+	<span id="btn_save_song" class="btn btn-info hidden" onclick="save_song()" style="margin-top: 3%"> Lied speichern </span>
+	
 	<br>
 	<br>
 
-	<textarea id="textarea_songcontent" rows="30" cols="65" style="margin-right: 3%; font-family:Lucida Console, Monaco, monospace">Lied mit Akkorden</textarea>
-	<span id="show_pdf_check_placeholder"> </span>
-
-	<br>
-	<br>
+    <span id="show_pdf_check_placeholder"> </span>
+</div>
+</div>
 {% endblock %}
 
 {% block individual_js %}
