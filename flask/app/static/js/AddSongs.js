@@ -49,22 +49,25 @@ check_new_song = function(){
   var songcontent = $("#textarea_songcontent").val();
   var data = {"songtitle": songtitle, "songcontent": songcontent};
 
-  // var mode_button = $('<button />').attr("id","btn_check_mode").addClass("btn btn-primary")
-    // .text("Tonart überprüfen").css("margin-top","-4%").css("margin-left","8%")
-    // .on("click", function() {check_mode();});
-
   $.ajax({
     contentType: 'application/json',
     type: 'POST',
     url: 'checksong',
     data: JSON.stringify(data),
     success: function(d){
-      $("#show_pdf_check").remove();
-      // $("#btn_check_mode").remove();
-      // $("#btn_mode_2").remove();
-      // $("#btn_mode_1").remove();
-      // $("#btn_mode_check_placeholder").append(mode_button);
       $("#show_pdf_check_placeholder").append(d.path);
+
+      var mode1 = d.mode1;
+      var mode2 = d.mode2;
+      $("#btn_mode_2").remove();
+      $("#btn_mode_1").remove();
+      var btn_mode_1 = $('<button />').prop("type","radio").attr("id","btn_mode_1").addClass("btn btn_mode_suggestion")
+        .text(mode1).val(mode1).css("margin-left","1%").on("click", function() {set_selected_mode(this);});
+      var btn_mode_2 = $('<button />').prop("type","radio").attr("id","btn_mode_2").addClass("btn btn_mode_suggestion")
+        .text(mode2).val(mode2).css("margin-left","1%").on("click", function() {set_selected_mode(this);});
+      $("#show_pdf_check").remove();
+      $("#btn_modes_placeholder").append(btn_mode_1);
+      $("#btn_modes_placeholder").append(btn_mode_2);
       $("#btn_modes_placeholder").removeClass("hidden");
     },
     error: function(obj, st, err){
