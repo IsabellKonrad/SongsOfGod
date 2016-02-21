@@ -9,7 +9,7 @@ import subprocess
 from time import gmtime, strftime
 from transpose import transpose_song
 from add_songs import txt2latex
-from find_mode import use_classifier
+from find_mode import use_classifier, mode_to_song
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -17,15 +17,6 @@ sys.setdefaultencoding('utf-8')
 if 'ubuntu' in os.getcwd():
     # on AWS server where cwd is not set properly. Hence this workaround
     os.chdir('/home/ubuntu/SongsOfGod/flask')
-
-# def make_umlaute(input):
-#    input = input.replace('ae', u'\u00e4')
-#    input = input.replace('oe', u'\u00f6')
-#    input = input.replace('ue', u'\u00fc')
-#    input = input.replace('Ae', u'\u00c4')
-#    input = input.replace('Oe', u'\u00d6')
-#    input = input.replace('Ue', u'\u00dc')
-#    return input
 
 
 def make_songlist():
@@ -38,7 +29,6 @@ def make_songlist():
         song = songpath.replace('../songs/', '').replace('.tex', '')
         songname = content.split('begin{song}{')[1].split('}')[0]
         mode = content.split('tonart{')[1].split('}')[0]
-        #g.write(song + ':' + make_umlaute(songname) + ':' + mode + '\n')
         g.write(song + ':' + songname + ':' + mode + '\n')
     g.close()
 
@@ -88,7 +78,6 @@ def delete_pdfs_texs_txts():
 
 
 def create_pdf(songs_and_modes, jazz):
-
     latex_head_path = 'app/static/latex_head'
     f = open(latex_head_path, 'r')
     latex_head = f.read()
@@ -172,36 +161,31 @@ def checksong():
     delete_pdfs_texs_txts()
     content = request.get_json(silent=True)
     songtitle = content["songtitle"]
-    songpath = title_cleaning(songtitle)
+    songpath = 'app/static/' + title_cleaning(songtitle)
     songcontent = content["songcontent"]
-    songpath = 'app/static/' + songpath
     f = open(songpath + '.txt','w')
     f.write(songcontent)
     f.close()
     txt2latex(songpath + '.txt', songtitle)
+    g = open(songpath + '.txt','r')
+    songcontent = g.read()
+    g.close()
+    mode1, mode2 = use_classifier(songcontent)
     path = create_pdf_check(songpath + '.txt')
     source_url = url_for('static', filename='./' + path + '.pdf')
-    pdf_path = '<embed id="show_pdf_check" src="' + source_url + \
+    pdf_path = '<embed id="show_pdf_check" style="margin-bottom: 5%" src="' + source_url + \
         '" width="350" height="530"  type="application/pdf">'
-    return jsonify({"path": pdf_path})
+    return jsonify({"path": pdf_path, "mode1": mode1, "mode2": mode2})
 
 
-
-@app.route('/getmode', methods=['GET', 'POST'])
-def getmode():
-    content = request.get_json(silent=True)
-    songtitle = title_cleaning(content["songtitle"])
-    songpath = 'app/static/' + songtitle
-    f = open(songpath + '.txt','r')
-    songcontent = f.read()
-    f.close()
-    mode1, mode2 = use_classifier(songcontent)
-    return jsonify({"mode1": mode1, "mode2": mode2, "mode1f": mode1 + ' ?', "mode2f": mode2 + ' ?'})
-
-@app.route('/setmode', methods=['GET', 'POST'])
-def setmode():
+@app.route('/savesong', methods=['GET', 'POST'])
+def savesong():
     content = request.get_json(silent=True)
     mode = content["mode"]
-
-    return jsonify({})
+    songtitle = content["songtitle"]
+    songpath = 'app/static/' + title_cleaning(songtitle) + '.txt'
+    mode_to_song(songpath,mode)
+    os.rename(songpath, '../songs/' + title_cleaning(songtitle) + '.tex')
+    make_songlist()
+    return jsonify({"success": True})
 

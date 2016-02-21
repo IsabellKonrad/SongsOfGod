@@ -32,6 +32,7 @@ def handle_chord(chord):
         chord = chord.replace('b','*b')
     return chord
 
+
 def chords_to_tuples(chord_line):
     chord_line = chord_line.strip('\n')
     indices = []
@@ -65,6 +66,8 @@ def handle_umlaute(line,chords):
         for tup in chords:
             chord = tup[0]
             index = tup[1]
+            if umlaut == index:
+                index = index + 3
             if umlaut <= index:
                 index = index + 2
             chords_new.append((chord, index))
@@ -125,6 +128,18 @@ def content_cleaning(input):
     input = input.replace(u'\u00D6','\\"O')
     input = input.replace(u'\u00DC','\\"U')
     input = input.replace(u'\u00DF','\\ss{}')
+    input = input.replace('\t','    ')
+    return input
+
+def title_cleaning(input):
+    input = input.replace("`","'")
+    input = input.replace(u'\u00E4','ae')
+    input = input.replace(u'\u00F6','oe')
+    input = input.replace(u'\u00FC','ue')
+    input = input.replace(u'\u00C4','Ae')
+    input = input.replace(u'\u00D6','Oe')
+    input = input.replace(u'\u00DC','Ue')
+    input = input.replace(u'\u00DF','ss')
     input = input.replace('\t','    ')
     return input
 
@@ -199,7 +214,7 @@ def txt2latex(filename, songtitle):
     content = content.replace('\n\n\n','\n\n\\bigskip\n\n')
     content = content_cleaning(content)
     name = filename.split('.')[0]
-    songtitle = content_cleaning(songtitle).strip()
+    songtitle = title_cleaning(songtitle).strip()
     content = '\\begin{song}{' + songtitle + '}\n\n' + content + '\n\\end{song}'
     g = open(name + '.txt','w')
     g.write(content)

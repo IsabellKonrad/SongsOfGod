@@ -1,53 +1,53 @@
-take_this_mode = function(mode){
-    console.log(mode)
-    var data = {"mode": mode};
-    $.ajax({
-    contentType: 'application/json',
-    type: 'POST',
-    url: 'setmode',
-    data: JSON.stringify(data),
-    success: function(d){},
-    error: function(obj, st, err){
-      alert(err);
+save_song = function(){
+    var mode=0;
+    if ($("#btn_mode_1").hasClass('active')){
+        var mode = $("#btn_mode_1").val();
     }
-  });
-}
-
-
-check_mode = function(songcontent){
-  var songtitle = $("#textarea_songtitle").val();
-  var data = {"songtitle": songtitle};
-  
-  $.ajax({
-    contentType: 'application/json',
-    type: 'POST',
-    url: 'getmode',
-    data: JSON.stringify(data),
-    success: function(d){
-      $("#btn_mode_2").remove();
-      $("#btn_mode_1").remove();
-      var mode1 = d.mode1;
-      var mode2 = d.mode2;
-      var mode1f = d.mode1f;
-      var mode2f = d.mode2f;
-      var btn_mode_1 = $('<button />').attr("id","btn_mode_1").addClass("btn btn-info btn-sm")
-        .text(mode1f).css("margin-left","3%").on("click", function() {take_this_mode(mode1);});
-      var btn_mode_2 = $('<button />').attr("id","btn_mode_2").addClass("btn btn-info btn-sm")
-        .text(mode2f).css("margin-left","3%").on("click", function() {take_this_mode(mode2);});
-      $("#btn_modes_placeholder").append(btn_mode_1);
-      $("#btn_modes_placeholder").append(btn_mode_2);
-    },
-    error: function(obj, st, err){
-      alert(err);
+    else if ($("#btn_mode_2").hasClass('active')){
+        var mode = $("#btn_mode_2").val();
     }
-  });
+    else {
+        alert("No mode chosen")
+    }
+    var songtitle = $("#textarea_songtitle").val();
+    if (mode != 0){
+       var data = {"mode": mode, "songtitle": songtitle};
+       $.ajax({
+          contentType: 'application/json',
+          type: 'POST',
+          url: 'savesong',
+          data: JSON.stringify(data),
+          success: function(d){
+            console.log(d.success)
+          },
+          error: function(obj, st, err){
+          alert(err);
+          }
+       });
+    }
 }
 
 
 check_new_song = function(){
+  $("#btn_save_song").addClass("hidden");
+  $("#btn_mode_2").remove();
+  $("#btn_mode_1").remove();
+  $("#select_mode").remove();
+  $("#show_pdf_check").remove();
   var songtitle = $("#textarea_songtitle").val();
   var songcontent = $("#textarea_songcontent").val();
   var data = {"songtitle": songtitle, "songcontent": songcontent};
+  var select_mode = $('<select />').css("width", "10%").prop("type","radio").addClass("btn btn_mode_suggestion")
+    .attr("id","select_mode").on("change", function() {set_selected_mode(this);});
+  var option = $('<option />').val("").text("andere Tonart");
+  option.disabled = true;
+  select_mode.append(option)
+  var modes_vec = ["As","f","Es","c","B","g","F","d","C","a","G","e","D","h","A","fis","E","cis"];
+  modes_vec.forEach(function(element){
+    var option = $('<option />').text(element).val(element);
+    select_mode.append(option);});
+  $(select_mode).select2({
+    minimumResultsForSearch: Infinity});
 
   $.ajax({
     contentType: 'application/json',
@@ -56,18 +56,18 @@ check_new_song = function(){
     data: JSON.stringify(data),
     success: function(d){
       $("#show_pdf_check_placeholder").append(d.path);
-
       var mode1 = d.mode1;
       var mode2 = d.mode2;
-      $("#btn_mode_2").remove();
-      $("#btn_mode_1").remove();
-      var btn_mode_1 = $('<button />').prop("type","radio").attr("id","btn_mode_1").addClass("btn btn_mode_suggestion")
-        .text(mode1).val(mode1).css("margin-left","1%").on("click", function() {set_selected_mode(this);});
-      var btn_mode_2 = $('<button />').prop("type","radio").attr("id","btn_mode_2").addClass("btn btn_mode_suggestion")
-        .text(mode2).val(mode2).css("margin-left","1%").on("click", function() {set_selected_mode(this);});
-      $("#show_pdf_check").remove();
+      var btn_mode_1 = $('<button />').prop("type","radio").attr("id","btn_mode_1").text(mode1)
+        .addClass("btn btn_mode_suggestion").css("margin-top", "-8%").css("margin-left","1%")
+        .val(mode1).on("click", function() {set_selected_mode(this);});
+      var btn_mode_2 = $('<button />').prop("type","radio").attr("id","btn_mode_2").text(mode2)
+        .addClass("btn btn_mode_suggestion").css("margin-top", "-8%").css("margin-right","1%")
+        .val(mode2).css("margin-left","1%").on("click", function() {set_selected_mode(this);});
+      
       $("#btn_modes_placeholder").append(btn_mode_1);
       $("#btn_modes_placeholder").append(btn_mode_2);
+      $("#btn_modes_placeholder").append(select_mode);
       $("#btn_modes_placeholder").removeClass("hidden");
     },
     error: function(obj, st, err){
@@ -75,6 +75,7 @@ check_new_song = function(){
     }
   });
 }
+
 
 set_selected_mode = function(e) {
   $("#btn_save_song").removeClass("hidden");

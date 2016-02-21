@@ -83,7 +83,6 @@ howgreatisourgod:How great is our God:G
 howlongolord:How long, o Lord:E
 hungryicome:Hungry I come:C
 iamyours:I am Yours:D
-icanseeclearlynow:I can see clearly now:G
 ichgebedirmeinherz:Ich gebe Dir mein Herz:G
 ichhebedenblick:Ich hebe den Blick:E
 ichkannnichtschweigen:Ich kann nicht schweigen:E
@@ -136,6 +135,7 @@ meinehoffnungundmeinestaerke:Meine Hoffnung und meine Freude:F
 meinerloeserlebt:Mein Erloeser lebt:E
 meineseelepreist:Meine Seele preist:G
 meinezeit:Meine Zeit:C
+meinganzesglueck:Mein ganzes Glueck:a
 meinherrundmeingott:Mein Herr und mein Gott:E
 meinherzmeinenleib:Mein Herz, meinen Leib:D
 meinjesus:Mein Jesus, mein Retter:A

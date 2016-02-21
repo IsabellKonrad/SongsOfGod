@@ -72,11 +72,10 @@ def use_classifier(content):
     
 
 def mode_to_song(song_name, mode):
-    g = open('../songs/' + song_name + '.tex','r')
+    g = open(song_name,'r')
     content = g.read()
     g.close()
     lines = content.split('\n')
-        
     done = 0
     new_content = ''
     for c_line in lines:
@@ -86,9 +85,10 @@ def mode_to_song(song_name, mode):
             done = -1
         if '\\begin{song}' in c_line:
             done = 1
-            
         new_content = new_content + c_line + '\n'
-    return new_content
+    g = open(song_name,'w')
+    g.write(new_content)
+    g.close()
 
 
 def set_suggested_mode():
