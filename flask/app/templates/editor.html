@@ -13,6 +13,8 @@
 
     <textarea id="textarea_songcontent" rows="30" cols="65" style="margin-right: 3%; font-family:Lucida Console, Monaco, monospace">Lied mit Akkorden</textarea>
 
+    <br>
+    <br>
 </div>
 <div class="col-md-5">
 	<span id="btn_modes_placeholder" class="hidden" style="height: 5px"></span>
@@ -23,10 +25,16 @@
 	<br>
 
     <span id="show_pdf_check_placeholder"> </span>
+
+    <br>
+    <br>
 </div>
 </div>
 {% endblock %}
 
 {% block individual_js %}
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="../static/js/AddSongs.js"></script>
 {% endblock %}

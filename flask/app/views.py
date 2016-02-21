@@ -134,12 +134,13 @@ def create_pdf_check(songpath):
     h = open('app/static/' + path + '.tex', 'w')
     h.write(content)
     h.close()
-    subprocess.call(['pdflatex', 'app/static/' + path + '.tex'])
+    latex_success = subprocess.call(['pdflatex', 'app/static/' + path + '.tex'])
+    latex_success = 1-latex_success
     os.remove(path + '.log')
     os.remove(path + '.aux')
     os.remove(path + '.out')
     os.rename(path + '.pdf', 'app/static/' + path + '.pdf')
-    return path
+    return path, latex_success
 
 def title_cleaning(input):
     print input
@@ -171,11 +172,11 @@ def checksong():
     songcontent = g.read()
     g.close()
     mode1, mode2 = use_classifier(songcontent)
-    path = create_pdf_check(songpath + '.txt')
+    path, latex_success = create_pdf_check(songpath + '.txt')
     source_url = url_for('static', filename='./' + path + '.pdf')
     pdf_path = '<embed id="show_pdf_check" style="margin-top: 2%" src="' + source_url + \
         '" width="350" height="530"  type="application/pdf">'
-    return jsonify({"path": pdf_path, "mode1": mode1, "mode2": mode2})
+    return jsonify({"path": pdf_path, "latex_success": latex_success, "mode1": mode1, "mode2": mode2})
 
 
 @app.route('/savesong', methods=['GET', 'POST'])
