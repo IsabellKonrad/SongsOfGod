@@ -17,7 +17,7 @@ def chord_to_number(chord):
     if 'moll' in chord:
         chord = chord.lower()
         chord = chord.replace('moll','')
-    if 'm' in chord:
+    if 'm' in chord and not 'maj' in chord:
         chord = chord.lower()
         chord = chord.replace('m','')
     if '#' in chord:

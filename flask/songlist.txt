@@ -29,6 +29,7 @@ dieguetedesherrn:Die Guete des Herrn:D
 diehimmelerzaehln:Die Himmel erzaehlen:G
 diostesalvemaria:Dios te salve Maria:D
 dirgebuehrtdieehre:Dir gebuehrt die Ehre:C
+dirgehoertmeinlob:Dir gehoert mein Lob:A
 dubistdasleben:Du bist das Leben:E
 dubistderfruehling:Du bist der Fruehling:G
 dubistderherr:Du bist der Herr:G
@@ -124,6 +125,7 @@ lammgottes:Lamm Gottes:D
 laudateomnesgentes:Laudate omnes gentes:D
 letmeloveyoumore:Let me love You more:C
 letthenameofthelord:Let the name of the Lord:E
+liedtitel:Liedtitel:cis
 lightoftheworld:Light of the World:E
 lobedenherrnmeineseele:Lobe den Herrn, meine Seele:a
 lordIgiveyoumyheart:Lord, I give you my heart:G

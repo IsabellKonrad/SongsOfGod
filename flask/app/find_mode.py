@@ -69,6 +69,7 @@ def use_classifier(content):
     mode2 = chords_Y[y_suggest.index(mode_number2)]
 
     return mode1, mode2
+
     
 
 def mode_to_song(song_name, mode):

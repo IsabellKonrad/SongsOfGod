@@ -21,8 +21,11 @@ save_song = function(){
     else if ($("#btn_mode_2").hasClass('active')){
         var mode = $("#btn_mode_2").val();
     }
+    else if ($("#select_mode").hasClass('active')){
+        var mode = $("#select_mode").find(":selected").val();
+    }
     else {
-        alert("No mode chosen")
+        send_message("Choose a mode to continue.")
     }
     var songtitle = $("#textarea_songtitle").val();
     if (mode != 0){
@@ -33,10 +36,15 @@ save_song = function(){
           url: 'savesong',
           data: JSON.stringify(data),
           success: function(d){
-            console.log(d.success)
+            if (d.success){
+              send_message("Lied erfolgreich gespeichert.")
+            }
+            else {
+              send_message("Wähle einen anderen Liedtitel. Diesen gibt es schon.")
+            }
           },
           error: function(obj, st, err){
-          alert(err);
+            send_message(err);
           }
        });
     }
@@ -68,8 +76,14 @@ check_new_song = function(){
     url: 'checksong',
     data: JSON.stringify(data),
     success: function(d){
-        if (d.latex_success == 0){
+        if (d.chords_success == false){
+            send_message("Something is wrong with your chords.")
+        }
+        else if (d.latex_success == 0){
           send_message("Something is wrong with your song content.")
+        }
+        else if (d.mode_success == false){
+            send_message("Something is wrong with your chords.")
         }
         else {
           $("#show_pdf_check_placeholder").append(d.path);

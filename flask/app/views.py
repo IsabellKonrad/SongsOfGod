@@ -167,26 +167,48 @@ def checksong():
     f = open(songpath + '.txt','w')
     f.write(songcontent)
     f.close()
-    txt2latex(songpath + '.txt', songtitle)
-    g = open(songpath + '.txt','r')
-    songcontent = g.read()
-    g.close()
-    mode1, mode2 = use_classifier(songcontent)
-    path, latex_success = create_pdf_check(songpath + '.txt')
-    source_url = url_for('static', filename='./' + path + '.pdf')
-    pdf_path = '<embed id="show_pdf_check" style="margin-top: 2%" src="' + source_url + \
+
+    chords_success = txt2latex(songpath + '.txt', songtitle)
+    if chords_success:
+        g = open(songpath + '.txt','r')
+        songcontent = g.read()
+        g.close()
+        try:
+            mode1, mode2 = use_classifier(songcontent)
+            mode_success = True
+        except:
+            mode_success = False
+        path, latex_success = create_pdf_check(songpath + '.txt')
+        source_url = url_for('static', filename='./' + path + '.pdf')
+        pdf_path = '<embed id="show_pdf_check" style="margin-top: 2%" src="' + source_url + \
         '" width="350" height="530"  type="application/pdf">'
-    return jsonify({"path": pdf_path, "latex_success": latex_success, "mode1": mode1, "mode2": mode2})
+    else:
+        pdf_path = ''
+        latex_success = 0
+        mode_success = False
+        mode1 = 0
+        mode2 = 0
+    data = {
+        "path": pdf_path,
+        "latex_success": latex_success,
+        "chords_success": chords_success,
+        "mode_success": mode_success,
+        "mode1": mode1,
+        "mode2": mode2
+    }
+    return jsonify(data)
 
 
 @app.route('/savesong', methods=['GET', 'POST'])
 def savesong():
     content = request.get_json(silent=True)
     mode = content["mode"]
-    songtitle = content["songtitle"]
-    songpath = 'app/static/' + title_cleaning(songtitle) + '.txt'
+    songtitle = title_cleaning(content["songtitle"])
+    songpath = 'app/static/' + songtitle + '.txt'
     mode_to_song(songpath,mode)
-    os.rename(songpath, '../songs/' + title_cleaning(songtitle) + '.tex')
+    if os.path.isfile('../songs/' + songtitle + '.tex'):
+        return jsonify({"success": False})
+    os.rename(songpath, '../songs/' + songtitle + '.tex')
     make_songlist()
     return jsonify({"success": True})
 
