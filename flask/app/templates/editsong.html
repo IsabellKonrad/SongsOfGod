@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div id="all_selected_songs_placeholder"></div>
+
+<br>
+<br>
+
+<textarea id="show_lyrics_placeholder" rows="30" cols="65" style="margin-right: 3%; font-family:Lucida Console, Monaco, monospace"></textarea>
+
+{% endblock %}
+
+{% block script_variables %}
+var songlist = {{ songlist|safe }};
+{% endblock %}
+
+{% block individual_js %}
+<script src="../static/js/EditSong.js"></script>
+{% endblock %}

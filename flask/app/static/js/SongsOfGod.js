@@ -23,7 +23,8 @@ make_song_selector = function(){
     minimumResultsForSearch: Infinity
   });
 
-  var del_button = $('<button />').addClass("btn btn-danger btn-sm").text("Entfernen").css("margin-left","9px").on("click", function() {delete_song(this);});
+  var del_button = $('<button />').addClass("btn btn-danger btn-sm").text("Entfernen")
+    .css("margin-left","9px").on("click", function() {delete_song(this);});
   div.append(del_button);
   return div;
 };

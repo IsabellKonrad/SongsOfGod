@@ -58,6 +58,12 @@ def editor():
     return render_template("editor.html")
 
 
+@app.route('/editsong')
+def editsong():
+    songlist = get_songlist()
+    return render_template("editsong.html", songlist = songlist)
+
+
 def get_lyrics(song, mode):
     songpath = '../songs/' + song + '_' + mode + '.tex'
     f = open(songpath, 'r')
@@ -212,3 +218,13 @@ def savesong():
     make_songlist()
     return jsonify({"success": True})
 
+
+@app.route('/getsongedit', methods=['GET','POST'])
+def getsongedit():
+    content = request.get_json(silent=True)
+    song = content["selected_song"]
+    songpath = '../songs/' + song + '.tex'
+    g = open(songpath, 'r')
+    song_content = g.read()
+    g.close()
+    return jsonify({"lyrics": song_content})
