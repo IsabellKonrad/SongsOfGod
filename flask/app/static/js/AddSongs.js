@@ -37,10 +37,10 @@ save_song = function(){
           data: JSON.stringify(data),
           success: function(d){
             if (d.success){
-              send_message("Lied erfolgreich gespeichert.")
+              send_message("Lied erfolgreich gespeichert.");
             }
             else {
-              send_message("Wähle einen anderen Liedtitel. Diesen gibt es schon.")
+              send_message("Wähle einen anderen Liedtitel. Diesen gibt es schon.");
             }
           },
           error: function(obj, st, err){

@@ -228,3 +228,46 @@ def getsongedit():
     song_content = g.read()
     g.close()
     return jsonify({"lyrics": song_content})
+
+
+def get_pdf_editsong(songcontent):
+    latex_head_path = 'app/static/latex_head_check'
+    f = open(latex_head_path, 'r')
+    latex_head_check = f.read()
+    f.close()
+    content = latex_head_check + songcontent + '\n}\n\n\\end{document}'
+    path = strftime("%Y%m%d_%H%M%S", gmtime())
+    h = open('app/static/' + path + '.tex', 'w')
+    h.write(content)
+    h.close()
+    latex_success = subprocess.call(['pdflatex', 'app/static/' + path + '.tex'])
+    latex_success = 1-latex_success
+    os.remove(path + '.log')
+    os.remove(path + '.aux')
+    os.remove(path + '.out')
+    os.rename(path + '.pdf', 'app/static/' + path + '.pdf')
+    return path, latex_success
+
+@app.route('/checksongedit', methods=['GET','POST'])
+def checksongedit():
+    delete_pdfs_texs_txts()
+    content = request.get_json(silent=True)
+    songcontent = content["songcontent"]
+    path, latex_success = get_pdf_editsong(songcontent)
+    source_url = url_for('static', filename='./' + path + '.pdf')
+    pdf_path = '<embed id="show_pdf_check" style="margin-top: 8%" src="' + source_url + \
+        '" width="350" height="530"  type="application/pdf">'
+    return jsonify({"pdfpath": pdf_path, "latex_success": latex_success})
+
+
+@app.route('/editsavesong', methods=['GET', 'POST'])
+def editsavesong():
+    content = request.get_json(silent=True)
+    song = content["selected_song"]
+    songcontent = content["songcontent"]
+    songpath = '../songs/' + song + '.tex'
+    g = open(songpath, 'w')
+    x = g.write(songcontent)
+    print x
+    g.close()
+    return jsonify({"success": True})

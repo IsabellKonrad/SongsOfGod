@@ -1,12 +1,33 @@
+send_message = function(message){
+    var m = $('<div />').addClass("modal fade").attr("data-role","dialog");
+    var dialog = $('<div />').addClass("modal-dialog");
+    var content = $('<div />').addClass("modal-content");
+    var body = $('<div />').addClass("modal-body");
+    var mtext = $('<p />').text(message);
+    var btn_close = $('<button />').addClass("btn btn-default").attr("data-dismiss","modal").text("Close");
+    body.append(mtext);
+    body.append(btn_close);
+    content.append(body);
+    dialog.append(content);
+    m.append(dialog);
+    m.modal();
+}
+
+
+change_select_song = function(){
+    $("#show_pdf_check").remove();
+    $("#btn_save_song").addClass("hidden");
+    $("#btn_check_song").addClass("hidden");
+}
+
+
 make_song_selector = function(){
   var div = $('<div />').addClass("placeholder_selectgroup");
 
   var select_song = $('<select />').attr("id","select_song").addClass("class_selected_songs")
-      .css("width", "35%");
+      .css("width", "35%").on("change",function (){change_select_song();});
   div.append(select_song);
-  $(select_song).select2({
-    placeholder: "Lied"
-  });
+  $(select_song).select2({placeholder: "Lied"});
 
   var span_space = $('<span />').css("margin-left","5px").css("margin-right","5px");
   div.append(span_space);
@@ -26,20 +47,64 @@ make_song_selector = function(){
 get_lyrics = function(){
     var selected_song = $("#select_song").find(":selected").val();
     var data = {"selected_song": selected_song};
-    console.log(data)
     $.ajax({
       contentType: 'application/json',
       type: 'POST',
       url: 'getsongedit',
       data: JSON.stringify(data),
       success: function(d){
-        $("#show_lyrics_placeholder").text(d.lyrics);
+        send_message("Der Quellcode des Liedes ist in Latex geschrieben. Bitte ändere nicht die Textstruktur.");
+        $("#btn_check_song").removeClass("hidden");
+        $("#btn_save_song").addClass("hidden");
+        $("#show_pdf_check").remove();
+        $("#show_lyrics_placeholder").val(d.lyrics);
       },
       error: function(obj, st, err){
         alert(err);
       }
     });
+}
 
+check_song = function(){
+    $("#show_pdf_check").remove();
+    var songcontent = $("#show_lyrics_placeholder").val();
+    var data = {"songcontent": songcontent};
+    $.ajax({
+      contentType: 'application/json',
+      type: 'POST',
+      url: 'checksongedit',
+      data: JSON.stringify(data),
+      success: function(d){
+        $("#show_pdf_check_placeholder").append(d.pdfpath);
+        $("#btn_save_song").removeClass("hidden");
+      },
+      error: function(obj, st, err){
+        alert(err);
+      }
+    });
+}
+
+save_song = function(){
+    var songcontent = $("#show_lyrics_placeholder").val();
+    var selected_song = $("#select_song").find(":selected").val();
+    var data = {"selected_song": selected_song, "songcontent": songcontent};
+    $.ajax({
+        contentType: 'application/json',
+        type: 'POST',
+        url: 'editsavesong',
+        data: JSON.stringify(data),
+        success: function(d){
+        if (d.success){
+            send_message("Lied erfolgreich gespeichert.");
+        }
+        else {
+            send_message("Speichern fehlgeschlagen.");
+        }
+        },
+        error: function(obj, st, err){
+            send_message(err);
+        }
+    });
 }
 
 

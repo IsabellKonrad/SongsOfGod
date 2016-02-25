@@ -1,13 +1,34 @@
 {% extends "layout.html" %}
-
 {% block content %}
-<div id="all_selected_songs_placeholder"></div>
 
-<br>
-<br>
+<div class="row">
+<div class="col-md-7">
 
-<textarea id="show_lyrics_placeholder" rows="30" cols="65" style="margin-right: 3%; font-family:Lucida Console, Monaco, monospace"></textarea>
+    <div id="all_selected_songs_placeholder"></div>
 
+    <br>
+    <br>
+
+    <textarea id="show_lyrics_placeholder" rows="30" cols="65" style="margin-right: 3%; font-family:Lucida Console, Monaco, monospace"></textarea>
+
+   <br>
+   <br>
+
+</div>
+<div class="col-md-5">
+    <button id="btn_check_song" class="btn btn-info hidden" onclick="check_song()" style="margin-left:5px; margin-right:5px"> Überprüfen </button>
+    <button id="btn_save_song" class="btn btn-danger hidden" onclick="save_song()" style="margin-left:5px; margin-right:5px"> Lied speichern </button>
+    
+    <br>
+    <br>
+
+    <span id="show_pdf_check_placeholder"> </span>
+
+    <br>
+    <br>
+
+</div>
+</div>
 {% endblock %}
 
 {% block script_variables %}
@@ -15,5 +36,7 @@ var songlist = {{ songlist|safe }};
 {% endblock %}
 
 {% block individual_js %}
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="../static/js/EditSong.js"></script>
 {% endblock %}
