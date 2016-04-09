@@ -25,7 +25,7 @@ make_song_selector = function(){
   var div = $('<div />').addClass("placeholder_selectgroup");
 
   var select_song = $('<select />').attr("id","select_song").addClass("class_selected_songs")
-      .css("width", "35%").on("change",function (){change_select_song();});
+      .css("width", "55%").on("change",function (){change_select_song();});
   div.append(select_song);
   $(select_song).select2({placeholder: "Lied"});
 

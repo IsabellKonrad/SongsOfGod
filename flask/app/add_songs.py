@@ -287,18 +287,30 @@ def txt2latex(filename, songtitle):
     chorus = 0
     bridge = 0
     for line in special_lines:
-        if 'Verse' in line or 'verse' in line or 'VERSE' in line:
-            content = content + "{\\bf %i.} " % verse
-            line = ''
-            verse = verse + 1
-        if 'Chorus' in line or 'chorus' in line or 'CHORUS' in line:
-            content = content + "\\begin{chorus}\n"
-            line = ''
-            chorus = 1
-        if 'Bridge' in line or 'bridge' in line or 'BRIDGE' in line:
-            content = content + "\\begin{bridge}\n"
-            line = ''
-            bridge = 1
+        if 'verse' in line.lower() or 'vers' in line.lower():
+            if 'end' in line.lower() or 'ende' in line.lower():
+                pass
+            else:
+                content = content + "{\\bf %i.} " % verse
+                line = ''
+                verse = verse + 1
+        if 'chorus' in line.lower():
+            if 'end' in line.lower() or 'ende' in line.lower():
+                content = content[:-4] + content[-4:-1].strip('\n') + "\\end{chorus}\n"
+                line = ''
+                chorus = 0
+            else:
+                content = content + "\\begin{chorus}\n"
+                line = ''
+                chorus = 1
+        if 'bridge' in line.lower():
+            if 'end' in line.lower() or 'ende' in line.lower():
+                line=''
+                content = content[:-4] + content[-4:-1].strip('\n') + "\\end{bridge}\n"
+            else:
+                content = content + "\\begin{bridge}\n"
+                line = ''
+                bridge = 0
 
         if 'llll' in line:
             if line_line:
@@ -330,12 +342,6 @@ def txt2latex(filename, songtitle):
             if line_line:
                 content = content + content_cleaning(line_line)
                 line_line = ''
-            if chorus:
-                content = content + '\\end{chorus}\n'
-                chorus = 0
-            if bridge:
-                content = content + '\\end{bridge}\n'
-                bridge = 0
             content = content + '\n'
     if line_line:
         content = content + content_cleaning(line_line)

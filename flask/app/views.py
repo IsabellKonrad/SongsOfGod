@@ -53,15 +53,35 @@ def index():
     return render_template("index.html", songlist=songlist)
 
 
-@app.route('/editor')
+@app.route('/addsong')
 def editor():
-    return render_template("editor.html")
+    return render_template("addsong.html")
 
 
 @app.route('/editsong')
 def editsong():
     songlist = get_songlist()
     return render_template("editsong.html", songlist = songlist)
+    
+
+@app.route('/anleitungA')
+def anleitungA():
+    return render_template("anleitungA.html")
+@app.route('/anleitungB')
+def anleitungB():
+    return render_template("anleitungB.html")
+@app.route('/anleitungC')
+def anleitungC():
+    return render_template("anleitungC1.html")
+@app.route('/anleitungCC')
+def anleitungCC():
+    return render_template("anleitungC2.html")
+@app.route('/anleitungD')
+def anleitungD():
+    return render_template("anleitungD.html")
+@app.route('/anleitungE')
+def anleitungE():
+    return render_template("anleitungE.html")
 
 
 def get_lyrics(song, mode):
@@ -149,7 +169,6 @@ def create_pdf_check(songpath):
     return path, latex_success
 
 def title_cleaning(input):
-    print input
     input = input.strip().lower()
     input = input.replace(' ','')
     input = input.replace("`",'')
@@ -203,6 +222,22 @@ def checksong():
         "mode2": mode2
     }
     return jsonify(data)
+
+
+
+@app.route('/get_gform_addy', methods=['GET','POST'])
+def get_gform_addy():
+    content = request.get_json(silent=True)
+    songtitle = content["songtitle"]
+    songcontent = content["songcontent"]
+    linkA = "https://docs.google.com/forms/d/1C7HPb5uI5yUthS4viZIaFzPiEEKw1Cxdz68tfWhwdrs/viewform?entry.85130954="
+    linkB = songtitle.replace(' ','+').replace('\n','%0A')
+    linkC = "&entry.1207972274="
+    linkD = songcontent.replace(' ','+').replace('\n','%0A')
+    linkE = "&entry.1082742530"   
+    link = linkA + linkB + linkC + linkD + linkE
+    return jsonify({"link": link})
+
 
 
 @app.route('/savesong', methods=['GET', 'POST'])
@@ -267,7 +302,7 @@ def editsavesong():
     songcontent = content["songcontent"]
     songpath = '../songs/' + song + '.tex'
     g = open(songpath, 'w')
-    x = g.write(songcontent)
-    print x
+    g.write(songcontent)
     g.close()
+    make_songlist()
     return jsonify({"success": True})

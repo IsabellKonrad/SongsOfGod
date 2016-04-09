@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-7">
+
+	<textarea id="textarea_songtitle" rows="2" cols="29" style="font-family:Lucida Console, Monaco, monospace">(Liedtitel)   Hungry</textarea>
+
+    <button onclick="show_anleitung()" class="btn btn-info" id="btn_goto_anleitung" style="margin-top: -4%; margin-left: 2%; margin-right: 0%;"> Anleitung </button>
+
+	<button onclick="check_new_song()" id="btn_check_song" class="btn btn-primary" style="margin-top: -4%; margin-left: 2%; margin-right: 0%;"> Lied prüfen </button>
+
+    <button onclick="get_help()" id="btn_help" class="btn btn-danger" style="margin-top: -4%; margin-left: 2%; margin-right: 0%;"> Hilfe </button>
+
+    <br>
+    <br>
+
+    <textarea id="textarea_songcontent" rows="30" cols="65" style="margin-right: 3%; font-family:Lucida Console, Monaco, monospace">
+(Lied mit Akkorden)
+
+
+Verse 1
+C              Am7
+Hungry, I come to You
+      G             F
+for I know You satisfy.
+C           Am7
+I am empty, but I know
+     G                  F
+Your love does not run dry.
+
+Bridge
+         G        F/A
+And so I wait for You,
+     G/H       F
+so I wait for You.
+End Bridge
+
+Chorus
+    C             Fmaj7
+I'm falling on my knees,
+   C            Fmaj7
+offering all of me.
+    C                  Fmaj7           C
+Jesus, You're all this heart is living for.
+End Chorus
+
+Verse 2
+C             Am7
+Broken, I run to You,
+          G            F
+for Your arms are open wide.
+C           Am7
+I am weary, but I know
+     G                 F
+Your touch restores my life.
+
+</textarea>
+
+    <br>
+    <br>
+</div>
+<div class="col-md-5">
+	<span id="btn_modes_placeholder" class="hidden" style="height: 5px;margin-left:2%"></span>
+
+	<span id="btn_save_song" class="btn btn-danger hidden" onclick="save_song()" style="margin-top: 3%;margin-left:2%;"> Speichern </span>
+	
+	<br>
+	<br>
+
+    <span id="show_pdf_check_placeholder"> </span>
+
+    <br>
+    <br>
+</div>
+</div>
+{% endblock %}
+
+{% block individual_js %}
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="../static/js/AddSongs.js"></script>
+{% endblock %}
