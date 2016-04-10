@@ -8,4 +8,5 @@ songs/*
 *.pid
 *.ini
 flask/app/static/*.txt
-
+flask/songlist.txt
+classifier/classifier.bin
