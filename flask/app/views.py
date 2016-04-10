@@ -206,7 +206,7 @@ def checksong():
             mode2 = 'B'
             mode_success = True
         except:
-            mode_success = False
+            mode_success = True
             mode1 = 'C'
             mode2 = 'C'
         print 'xxxxxxxxxxxxxxxxxx' + mode1
