@@ -194,6 +194,7 @@ def checksong():
     f.close()
 
     chords_success = txt2latex(songpath + '.txt', songtitle)
+    print chords_success
     if chords_success:
         g = open(songpath + '.txt','r')
         songcontent = g.read()
