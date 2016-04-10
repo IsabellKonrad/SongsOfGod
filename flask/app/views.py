@@ -198,18 +198,13 @@ def checksong():
         g = open(songpath + '.txt','r')
         songcontent = g.read()
         g.close()
-        try:
-            mode1 = 'A'
-            mode2 = 'A'
-            mode1, mode2 = use_classifier(songcontent)
-            mode1 = 'B'
-            mode2 = 'B'
-            mode_success = True
-        except:
-            mode_success = True
-            mode1 = 'C'
-            mode2 = 'C'
-        print 'xxxxxxxxxxxxxxxxxx' + mode1
+        #try:
+
+        mode1, mode2 = use_classifier(songcontent)
+        mode_success = True
+        #except:
+        #    mode_success = False
+
         path, latex_success = create_pdf_check(songpath + '.txt')
         source_url = url_for('static', filename='./' + path + '.pdf')
         pdf_path = '<embed id="show_pdf_check" style="margin-top: 2%" src="' + source_url + \
