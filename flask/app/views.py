@@ -194,7 +194,6 @@ def checksong():
     f.close()
 
     chords_success = txt2latex(songpath + '.txt', songtitle)
-    print 'xxxxxxxxxxxxxxxxxx' + str(chords_success)
     if chords_success:
         g = open(songpath + '.txt','r')
         songcontent = g.read()
@@ -210,6 +209,7 @@ def checksong():
             mode_success = False
             mode1 = 'C'
             mode2 = 'C'
+        print 'xxxxxxxxxxxxxxxxxx' + mode1
         path, latex_success = create_pdf_check(songpath + '.txt')
         source_url = url_for('static', filename='./' + path + '.pdf')
         pdf_path = '<embed id="show_pdf_check" style="margin-top: 2%" src="' + source_url + \
