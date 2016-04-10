@@ -200,9 +200,13 @@ def checksong():
         g.close()
         try:
             mode1, mode2 = use_classifier(songcontent)
+            mode1 = 'C'
+            mode2 = 'C'
             mode_success = True
         except:
             mode_success = False
+            mode1 = 'C'
+            mode2 = 'C'
         path, latex_success = create_pdf_check(songpath + '.txt')
         source_url = url_for('static', filename='./' + path + '.pdf')
         pdf_path = '<embed id="show_pdf_check" style="margin-top: 2%" src="' + source_url + \
