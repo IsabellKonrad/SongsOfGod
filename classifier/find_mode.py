@@ -95,20 +95,23 @@ def make_classifier():
     y_test = y_test.astype(int)
     clf = OneVsRestClassifier(SVC(kernel='linear', class_weight='auto', probability=True))
     clf.fit(X_train, y_train)
-    y_suggest = clf.predict_proba(X_test)
-    nn = 0
-    n = 0
-    for y_s, y_t in zip(y_suggest, y_test):
-        s1 = chords_Y[np.argmax(y_s)]
-        y_s[np.argmax(y_s)]=0
-        s2 = chords_Y[np.argmax(y_s)]
-        t = chords_Y[np.argmax(y_t)]        
-        print 'Suggest: ' + s1 + ' or ' + s2 + '  Real: ' + t
-        n = n+1
-        if s1==t:
-            nn = nn+1
-    if n>0:
-        print 'Accuracy is ' + str(float(nn)/n)
+    try:
+        y_suggest = clf.predict_proba(X_test)
+        nn = 0
+        n = 0
+        for y_s, y_t in zip(y_suggest, y_test):
+            s1 = chords_Y[np.argmax(y_s)]
+            y_s[np.argmax(y_s)]=0
+            s2 = chords_Y[np.argmax(y_s)]
+            t = chords_Y[np.argmax(y_t)]        
+            print 'Suggest: ' + s1 + ' or ' + s2 + '  Real: ' + t
+            n = n+1
+            if s1==t:
+                nn = nn+1
+        if n>0:
+            print 'Accuracy is ' + str(float(nn)/n)
+    except ValueError:
+        pass
     #print classification_report(clf.predict(X_test), y_test)
     pickle.dump(clf, open("classifier.bin", "wb"))   
 
