@@ -200,9 +200,11 @@ def checksong():
         songcontent = g.read()
         g.close()
         try:
+            mode1 = 'A'
+            mode2 = 'A'
             mode1, mode2 = use_classifier(songcontent)
-            mode1 = 'C'
-            mode2 = 'C'
+            mode1 = 'B'
+            mode2 = 'B'
             mode_success = True
         except:
             mode_success = False
