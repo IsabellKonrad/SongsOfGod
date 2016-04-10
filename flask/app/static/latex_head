@@ -8,8 +8,6 @@
 \usepackage{hyperref}
 \definecolor{darkblue}{rgb}{0,0,0} %{0,0,.5}
 \hypersetup{pdftex=true, colorlinks=true, breaklinks=true, linkcolor=darkblue, menucolor=darkblue, pagecolor=darkblue, urlcolor=darkblue}
-\usepackage{color}
-\usepackage{colortbl}
 \usepackage[ngerman]{babel}
 \usepackage{umlaute}
 \usepackage{color} %Chorus

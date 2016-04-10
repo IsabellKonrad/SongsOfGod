@@ -8,8 +8,6 @@
 \usepackage{hyperref}
 \definecolor{darkblue}{rgb}{0,0,0} %{0,0,.5}
 \hypersetup{pdftex=true, colorlinks=true, breaklinks=true, linkcolor=darkblue, menucolor=darkblue, pagecolor=darkblue, urlcolor=darkblue}
-\usepackage{color}
-\usepackage{colortbl}
 \usepackage[ngerman]{babel}
 \usepackage{umlaute}
 \usepackage{color} %Chorus
@@ -18,12 +16,10 @@
 \usepackage{framed} %Chorus
 \usepackage{fancyhdr} %Pagestyle
 \usepackage[top=2cm,bottom=.85cm,left=1.0cm,right=1.0cm]{geometry} %Pagestyle
-\usepackage{longtable}
 \usepackage{changepage}
 \usepackage{filecontents}
 \usepackage[osf,sc]{mathpazo}
-\usepackage{niceframe}
-\usepackage{lscape}
+\usepackage{niceframe}%\usepackage{lscape}
 \usepackage{enumerate}
 \usepackage{soul}
 \usepackage{graphicx}
