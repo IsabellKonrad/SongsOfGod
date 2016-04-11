@@ -83,6 +83,11 @@ def anleitungD():
 def anleitungE():
     return render_template("anleitungE.html")
 
+@app.route('/about')
+def about():
+    num_songs = len(glob.glob('../songs/*'))
+    print num_songs
+    return render_template("about.html", number_songs=num_songs)
 
 def get_lyrics(song, mode):
     songpath = '../songs/' + song + '_' + mode + '.tex'
@@ -198,13 +203,13 @@ def checksong():
         g = open(songpath + '.txt','r')
         songcontent = g.read()
         g.close()
-        #try:
-
-        mode1, mode2 = use_classifier(songcontent)
-        mode_success = True
-        #except:
-        #    mode_success = False
-
+        try:
+            mode1, mode2 = use_classifier(songcontent)
+            mode_success = True
+        except:
+            mode_success = False
+            mode1 = 0
+            mode2 = 0
         path, latex_success = create_pdf_check(songpath + '.txt')
         source_url = url_for('static', filename='./' + path + '.pdf')
         pdf_path = '<embed id="show_pdf_check" style="margin-top: 2%" src="' + source_url + \
