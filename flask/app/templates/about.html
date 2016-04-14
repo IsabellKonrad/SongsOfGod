@@ -7,23 +7,21 @@
     </div>
     <div class="col-md-8" style="background-color:#FFFEEE">
     <br>
-    <h4>
+    <h3>
     Darum geht es in <font face="arial" color="#d9534f">Songs of God</font>
-    </h4>
+    </h3>
     <br>
+
+    <h4>
+    Was
+    </h4>
 
     Songs of God ist eine Webseite, die <script>document.write(number_songs)</script> christliche Lieder
     mit Akkorden anbietet. Jedes Lied kann in alle verfügbaren Tonarten transponiert werden. 
     <br>
     Es können beliebig viele Lieder ausgewählt werden, welche auf einem PDF zusammengefasst und
     zum Download zur Verfügung gestellt werden.
-    <br>
-    <br>
-    Die Seite ist mit dem package <i>Flask</i> von Python geschrieben, mit Javascipt und Html. Mithilfe einer
-    RESTful API kommunizieren Python und Javascript miteinander. Die Lieder sind in Latex geschrieben, wozu für
-    die Akkorde das package <i>guitar</i> verwendet wird.
 
-    <br>
     <br>
     <br>
 
@@ -32,22 +30,51 @@
     in entsprechende Textfelder eingegeben werden können. Unter <i>Anleitung</i> wird die Syntax beschrieben, in der
     die Lieder eingeschrieben werden.
     <br>
-    <br>
     Um zu sehen, wie das Lied als PDF erscheint, wird der Button <i>Lied prüfen</i> geklickt. Falls es Probleme beim Hinzufügen von einem Lied gibt, kann mit dem <i>Hilfe</i>-Button um Hilfe gebeten werden.
     <br>
-    <br>
-    Ist ein Lied zur Zufriedenheit eingeschrieben, wird die Tonart des Liedes ausgewählt. Ein Maschine Learning 
-    Algorithmus (SVM) berechnet die zwei wahrscheinlichsten Tonarten, welche als Vorauswahl angegeben werden.
+    Ist ein Lied zur Zufriedenheit eingeschrieben, wird die Tonart des Liedes ausgewählt. Die zwei wahrscheinlichsten Tonarten werden als Vorauswahl angegeben.
     Mit dem Button <i>Speichern</i> wird das Lied im Liederpool abgespeichert und kann ab dann im Dropdown
     auf der Hauptseite <font color="#d9534f"><i>Songs of God</i></font> ausgewählt werden.
 
     <br>
     <br>
-    <br>
 
     Unter <font color="#d9534f"><i>Edit song</i></font> kann ein schon verfügbares Lied geändert werden.
-    Dabei erscheint der Quellcode des Liedes, welches in Latex geschrieben ist.
+    Dabei erscheint der Quellcode des Liedes.
     
+    <br>
+    <br>
+
+    <h4>
+    Wie
+    </h4>
+
+    Diese Webseite ist mit dem package <i>Flask</i> von Python geschrieben, mit Javascript und Html. Mithilfe einer
+    RESTful API kommunizieren Python und Javascript miteinander. 
+
+    <br>
+    <br>
+
+    Die Lieder sind in Latex geschrieben, wozu für die Akkorde das package <i>guitar</i> verwendet wird.
+
+    <br>
+    <br>
+    
+    Wird ein neues Lied eingeschrieben, berechnet ein Maschine Learning Algorithmus, eine Support Vector Machine (SVM), die zwei wahrscheinlichsten Tonarten, welche als Vorauswahl angegeben werden. 
+    <br>
+    Die SVM wurde mithilfe der Lieder trainiert, die bereits im Liederpool vorhanden sind und deren Tonart bereits bekannt ist.
+    Für jedes Lied wurden aus dem eingeschriebenen Liedtext die Akkorde extrahiert, die in einen 39-dimensionalen Vektor abstrahiert wurden. Auch die Tonart des Liedes wurde als Vektor geschrieben. Diese Vektoren gaben die Trainingsdaten, mit denen die SVM trainiert wurde. 
+
+    <br>
+    <br>
+
+    <h4>
+    Wer
+    </h4>
+
+    Diese Seite wurde erstellt von Isabell Konrad. Bei Anmerkungen, Vorschlägen und Fragen schreibe an
+    <img src="../static/email.jpg">
+
     <br>
     <br>
     </div>
