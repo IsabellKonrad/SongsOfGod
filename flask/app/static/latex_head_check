@@ -31,6 +31,9 @@
 
 %% Formatierung
 \newcommand{\h}[1]{\textsuperscript{#1}}
+\newcommand{\wdh}{{\it (2x)}}
+\newcommand{\wdhh}{{\it (3x)}}
+\newcommand{\wdhhh}{{\it (4x)}}
 \parindent=0cm
 \usepackage{guitar}
 \def\guitarPreAccord{\bf\strut}
