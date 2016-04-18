@@ -76,11 +76,34 @@ def HorB(content):
     return content
 
 
+def makewdh(line):
+    line = line.replace('(wdh)','wdh')
+    line = line.replace('wdh','\\quad\\wdh')
+    line = line.replace('(2x)','\\quad\\wdh')
+    line = line.replace('2x','\\quad\\wdh')
+    line = line.replace('(2X)','\\quad\\wdh')
+    line = line.replace('2X','\\quad\\wdh')
+    line = line.replace('(2 mal)','\\quad\\wdh')
+    line = line.replace('2 mal','\\quad\\wdh')
+    line = line.replace('(3x)','\\quad\\wdhh')
+    line = line.replace('3x','\\quad\\wdhh')
+    line = line.replace('(3X)','\\quad\\wdhh')
+    line = line.replace('3X','\\quad\\wdhh')
+    line = line.replace('(3 mal)','\\quad\\wdhh')
+    line = line.replace('3 mal','\\quad\\wdhh')
+    line = line.replace('(4x)','\\quad\\wdhhh')
+    line = line.replace('4x','\\quad\\wdhhh')
+    line = line.replace('(4X)','\\quad\\wdhhh')
+    line = line.replace('4X','\\quad\\wdhhh')
+    line = line.replace('(4 mal)','\\quad\\wdhhh')
+    line = line.replace('4 mal','\\quad\\wdhhh')
+
 def get_chords_lines(filename):
     f = open(filename,'r')
     special_lines = []
     for line in f:
         space_number = float(line.count(' '))/len(line)
+        line = makewdh(line)
         if len(line.strip())==0:
             special_lines.append('eeee')
         elif space_number <= 0.4 and len(line.strip())>3:
@@ -180,12 +203,12 @@ def handle_umlaute(line,chords):
     longer = chords[-1][1] - len(line)
     if longer > 0:
         line = line + " " * longer
-    umlaute = [m.start() for m in re.finditer('1', line)]
-    umlaute = umlaute + [m.start() for m in re.finditer('2', line)]
-    umlaute = umlaute + [m.start() for m in re.finditer('3', line)]
-    umlaute = umlaute + [m.start() for m in re.finditer('4', line)]
+    umlaute = [m.start() for m in re.finditer('%', line)]
     umlaute = umlaute + [m.start() for m in re.finditer('5', line)]
     umlaute = umlaute + [m.start() for m in re.finditer('6', line)]
+    umlaute = umlaute + [m.start() for m in re.finditer('7', line)]
+    umlaute = umlaute + [m.start() for m in re.finditer('8', line)]
+    umlaute = umlaute + [m.start() for m in re.finditer('9', line)]
 
     for umlaut in umlaute:
         umlaut = umlaut - 1
@@ -198,7 +221,7 @@ def handle_umlaute(line,chords):
             chords_new.append((chord, index))
         chords = chords_new
 
-    sss = [m.start() for m in re.finditer('7', line)]
+    sss = [m.start() for m in re.finditer('0', line)]
     for ss in sss:
         ss = ss - 1
         chords_new = []
@@ -244,24 +267,24 @@ def inject_chords(line, chords):
 
 def umlaute_to_numbers(input):
     input = input.replace("`","'")
-    input = input.replace(u'\u00E4','1')
-    input = input.replace(u'\u00F6','2')
-    input = input.replace(u'\u00FC','3')
-    input = input.replace(u'\u00C4','4')
-    input = input.replace(u'\u00D6','5')
-    input = input.replace(u'\u00DC','6')
-    input = input.replace(u'\u00DF','7')
+    input = input.replace(u'\u00E4','%')
+    input = input.replace(u'\u00F6','5')
+    input = input.replace(u'\u00FC','6')
+    input = input.replace(u'\u00C4','7')
+    input = input.replace(u'\u00D6','8')
+    input = input.replace(u'\u00DC','9')
+    input = input.replace(u'\u00DF','0')
     input = input.replace('\t','    ')
     return input
 
 def content_cleaning(input):
-    input = input.replace('1','\\"a')
-    input = input.replace('2','\\"o')
-    input = input.replace('3','\\"u')
-    input = input.replace('4','\\"A')
-    input = input.replace('5','\\"O')
-    input = input.replace('6','\\"U')
-    input = input.replace('7','\\ss{}')
+    input = input.replace('%','\\"a')
+    input = input.replace('5','\\"o')
+    input = input.replace('6','\\"u')
+    input = input.replace('7','\\"A')
+    input = input.replace('8','\\"O')
+    input = input.replace('9','\\"U')
+    input = input.replace('0','\\ss{}')
     return input
 
 def title_cleaning(input):
