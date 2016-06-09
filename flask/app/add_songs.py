@@ -97,6 +97,7 @@ def makewdh(line):
     line = line.replace('4X','\\quad\\wdhhh')
     line = line.replace('(4 mal)','\\quad\\wdhhh')
     line = line.replace('4 mal','\\quad\\wdhhh')
+    return line
 
 def get_chords_lines(filename):
     f = open(filename,'r')
