@@ -9,7 +9,8 @@ def HorB(content):
     
     def get_distance(thischord,thatchord):
         chordvec = ['es','Ges','b','Des','f','As','c','Es','g','B','d','F','a','C',
-        'e','G','h','D','fis','A','cis','E','gis','H','dis','Fis']
+        'e','G','h','D','fis','A','cis','E','gis','H','dis','Fis','ais','Cis','eis',
+        'Gis', 'his', 'Dis']
         try:
             thisnumber = chordvec.index(thischord)
         except:
