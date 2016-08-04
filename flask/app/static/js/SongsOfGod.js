@@ -66,14 +66,21 @@ $( document ).ready(function() {
   $("#all_selected_songs_placeholder").append(make_song_selector());
   $("#btn_get_lyrics").click(function(){
     var selected_songs = [];
-    $.each($(".class_selected_songs"), function(){
-     selected_songs.push($(this).select2().find(":selected").val());
-   });
     var selected_modes = [];
     $.each($(".class_selected_modes"), function(){
-     selected_modes.push($(this).select2().find(":selected").val());
-     $(this).select2({minimumResultsForSearch: Infinity});
-   });
+      var this_mode = $(this).select2().find(":selected").val();
+      if (typeof(this_mode)!='undefined'){
+        selected_modes.push(this_mode);
+        $(this).select2({minimumResultsForSearch: Infinity});
+        var this_song_selector = $(this).parent().children(".class_selected_songs");
+        var this_song = this_song_selector.select2().find(":selected").val();
+        selected_songs.push(this_song);
+      }
+      else{
+        $(this).select2({placeholder: "Tonart", minimumResultsForSearch: Infinity});
+      }
+    });
+    
     var jazz = $("#checkbox-jazz").is(":checked");
     var data = {"songs": selected_songs, "modes": selected_modes, "jazz": jazz};
     $.ajax({
