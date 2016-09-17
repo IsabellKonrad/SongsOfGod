@@ -97,7 +97,25 @@ $( document ).ready(function() {
       }
     });
   });
-
+  
+  $("#btn_get_all_songs").click(function(){
+    var jazz = $("#checkbox-jazz").is(":checked");
+    var data = {"jazz": jazz};
+    console.log('hallo');
+    $.ajax({
+      contentType: 'application/json',
+      type: 'POST',
+      url: 'getallsongs',
+      data: JSON.stringify(data),
+      success: function(d){
+        $("#show_pdf").remove();
+        $("#show_pdf_placeholder").append(d.path);
+      },
+      error: function(obj, st, err){
+        alert(err);
+      }
+    });
+  });
 
   $('#all_selected_songs_placeholder').on('change', '.class_selected_songs', function(){
     make_mode_selector(this);

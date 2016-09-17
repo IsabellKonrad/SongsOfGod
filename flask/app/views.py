@@ -143,11 +143,26 @@ def getsong():
     delete_pdfs_texs_txts()
     content = request.get_json(silent=True)
     songs_and_modes = zip(content["songs"], content["modes"])
+    print songs_and_modes[0]
     jazz = content["jazz"]
     path = create_pdf(songs_and_modes, jazz)
     source_url = url_for('static', filename='./' + path + '.pdf')
     pdf_path = '<embed id="show_pdf" src="' + source_url + \
-        '" width="600" height="700" type="application/pdf">'
+        '" width="800" height="800" type="application/pdf">'
+    return jsonify({"path": pdf_path})
+
+
+@app.route('/getallsongs', methods=['GET', 'POST'])
+def getallsongs():
+    delete_pdfs_texs_txts()
+    content = request.get_json(silent=True)
+    jazz = content["jazz"]
+    songs_and_modes = get_songlist()
+    songs_and_modes = [(sm[0],sm[2]) for sm in songs_and_modes]
+    path = create_pdf(songs_and_modes, jazz)
+    source_url = url_for('static', filename='./' + path + '.pdf')
+    pdf_path = '<embed id="show_pdf" src="' + source_url + \
+        '" width="800" height="800" type="application/pdf">'
     return jsonify({"path": pdf_path})
 
 
