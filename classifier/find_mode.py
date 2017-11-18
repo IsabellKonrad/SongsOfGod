@@ -86,7 +86,7 @@ def make_X_Y():
 
 
 def make_classifier():
-    test_size=0
+    test_size=0.1
     X, y = make_X_Y()
     X_train, X_test, y_train, y_test = train_test_split(X, y,test_size=test_size)
     X_train = X_train.astype(int)
@@ -104,7 +104,7 @@ def make_classifier():
             y_s[np.argmax(y_s)]=0
             s2 = chords_Y[np.argmax(y_s)]
             t = chords_Y[np.argmax(y_t)]        
-            print 'Suggest: ' + s1 + ' or ' + s2 + '  Real: ' + t
+            #print 'Suggest: ' + s1 + ' or ' + s2 + '  Real: ' + t
             n = n+1
             if s1==t:
                 nn = nn+1
@@ -113,7 +113,7 @@ def make_classifier():
     except ValueError:
         pass
     #print classification_report(clf.predict(X_test), y_test)
-    pickle.dump(clf, open("classifier.bin", "wb"))   
+    pickle.dump(clf, open("classifier.bin", "wb")) 
 
 
 ##############  Use Classifier   #####################
